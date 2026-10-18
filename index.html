@@ -1,0 +1,3871 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>C Minerva Launcher</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="app">
+
+  <!-- ===================== BACKGROUND SCENE ===================== -->
+  <div class="scene" aria-hidden="true">
+    <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <!-- sky -->
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#050d0b"/>
+          <stop offset="45%"  stop-color="#0c1c17"/>
+          <stop offset="78%"  stop-color="#16332a"/>
+          <stop offset="100%" stop-color="#1c3f31"/>
+        </linearGradient>
+        <!-- water -->
+        <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#153229"/>
+          <stop offset="35%"  stop-color="#0e241d"/>
+          <stop offset="100%" stop-color="#06120e"/>
+        </linearGradient>
+        <!-- froglight halo gradients -->
+        <radialGradient id="haloOchre" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="#ffdf8e" stop-opacity="0.95"/>
+          <stop offset="28%"  stop-color="#f0b64f" stop-opacity="0.55"/>
+          <stop offset="62%"  stop-color="#c98a2e" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="#c98a2e" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="haloPearl" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="#ffd4f2" stop-opacity="0.95"/>
+          <stop offset="30%"  stop-color="#eb94dd" stop-opacity="0.50"/>
+          <stop offset="65%"  stop-color="#b965a8" stop-opacity="0.16"/>
+          <stop offset="100%" stop-color="#b965a8" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="haloRose" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="#ffc2cf" stop-opacity="0.95"/>
+          <stop offset="30%"  stop-color="#ff6f91" stop-opacity="0.48"/>
+          <stop offset="66%"  stop-color="#c2415f" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#c2415f" stop-opacity="0"/>
+        </radialGradient>
+        <!-- froglight cores -->
+        <radialGradient id="coreOchre" cx="42%" cy="38%" r="70%">
+          <stop offset="0%"   stop-color="#fff8dd"/>
+          <stop offset="45%"  stop-color="#ffd977"/>
+          <stop offset="100%" stop-color="#e09a2b"/>
+        </radialGradient>
+        <radialGradient id="corePearl" cx="42%" cy="38%" r="70%">
+          <stop offset="0%"   stop-color="#fff2fc"/>
+          <stop offset="45%"  stop-color="#f7b9ea"/>
+          <stop offset="100%" stop-color="#cf78c0"/>
+        </radialGradient>
+        <radialGradient id="coreRose" cx="42%" cy="38%" r="70%">
+          <stop offset="0%"   stop-color="#ffeef2"/>
+          <stop offset="45%"  stop-color="#ff9db2"/>
+          <stop offset="100%" stop-color="#e2587a"/>
+        </radialGradient>
+
+        <!-- fog / mist -->
+        <filter id="blurSoft"  x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="26"/>
+        </filter>
+        <filter id="blurMed"   x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="10"/>
+        </filter>
+        <filter id="blurTiny"  x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="3"/>
+        </filter>
+        <!-- painterly grain -->
+        <filter id="grain">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" result="n"/>
+          <feColorMatrix in="n" type="matrix"
+            values="0 0 0 0 0.65  0 0 0 0 0.78  0 0 0 0 0.68  0 0 0 0.05 0"/>
+        </filter>
+
+        <!-- water reflection streaks -->
+        <linearGradient id="reflOchre" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#f0b64f" stop-opacity="0.40"/>
+          <stop offset="100%" stop-color="#f0b64f" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="reflPearl" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#eb94dd" stop-opacity="0.36"/>
+          <stop offset="100%" stop-color="#eb94dd" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="reflRose" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#ff6f91" stop-opacity="0.30"/>
+          <stop offset="100%" stop-color="#ff6f91" stop-opacity="0"/>
+        </linearGradient>
+
+        <!-- rim light for silhouettes -->
+        <linearGradient id="rimWarm" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%"   stop-color="#f0b64f" stop-opacity="0.55"/>
+          <stop offset="100%" stop-color="#f0b64f" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="rimPearl" x1="1" y1="0" x2="0" y2="0">
+          <stop offset="0%"   stop-color="#eb94dd" stop-opacity="0.45"/>
+          <stop offset="100%" stop-color="#eb94dd" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+
+      <!-- ============ sky ============ -->
+      <rect width="1920" height="1080" fill="url(#sky)"/>
+
+      <!-- faint moon behind cloud haze -->
+      <circle cx="1180" cy="180" r="150" fill="#9fd8c0" opacity="0.05" filter="url(#blurSoft)"/>
+      <circle cx="1180" cy="180" r="52"  fill="#cfeadd" opacity="0.10" filter="url(#blurMed)"/>
+
+      <!-- drifting mist banks -->
+      <g filter="url(#blurSoft)" opacity="0.5">
+        <ellipse cx="500"  cy="470" rx="520" ry="70" fill="#1e4034"/>
+        <ellipse cx="1400" cy="430" rx="600" ry="80" fill="#22483a"/>
+        <ellipse cx="980"  cy="560" rx="700" ry="60" fill="#1a3a2f"/>
+      </g>
+
+      <!-- ============ distant mangrove treeline ============ -->
+      <g fill="#08120e">
+        <path d="M0,600 L0,520 Q60,470 110,505 Q150,430 205,478 Q250,415 300,470
+                 Q345,440 385,485 Q430,420 480,472 Q540,430 585,486
+                 Q640,440 690,490 Q750,430 805,484 Q860,445 905,492
+                 Q960,425 1020,482 Q1080,440 1130,492 Q1190,420 1250,480
+                 Q1310,445 1360,494 Q1420,425 1480,478 Q1545,440 1600,492
+                 Q1660,420 1720,478 Q1790,445 1840,496 Q1890,460 1920,490
+                 L1920,600 Z"/>
+      </g>
+      <!-- hanging moss hints on the far treeline -->
+      <g stroke="#122a20" stroke-width="3" opacity="0.8" filter="url(#blurTiny)">
+        <path d="M220,485 q4,26 1,44"/><path d="M470,478 q5,30 0,50"/>
+        <path d="M812,490 q4,24 1,42"/><path d="M1258,486 q5,28 1,48"/>
+        <path d="M1718,484 q4,26 1,44"/>
+      </g>
+
+      <!-- ============ water ============ -->
+      <rect x="0" y="600" width="1920" height="480" fill="url(#water)"/>
+      <!-- waterline -->
+      <rect x="0" y="598" width="1920" height="3" fill="#2a5a46" opacity="0.35" filter="url(#blurTiny)"/>
+
+      <!-- reflections of the froglights -->
+      <g filter="url(#blurMed)">
+        <rect x="1498" y="606" width="46" height="240" fill="url(#reflOchre)"/>
+        <rect x="1196" y="616" width="34" height="190" fill="url(#reflPearl)"/>
+        <rect x="888"  y="662" width="26" height="150" fill="url(#reflRose)"/>
+        <rect x="418"  y="648" width="30" height="170" fill="url(#reflOchre)"/>
+        <rect x="1642" y="700" width="24" height="130" fill="url(#reflPearl)"/>
+      </g>
+
+      <!-- ============ froglight halos (behind the roots) ============ -->
+      <g>
+        <circle class="glow-pulse slow" cx="1521" cy="562" r="185" fill="url(#haloOchre)"/>
+        <circle class="glow-pulse"      cx="1213" cy="606" r="140" fill="url(#haloPearl)"/>
+        <circle class="glow-pulse fast" cx="901"  cy="657" r="105" fill="url(#haloRose)"/>
+        <circle class="glow-pulse slow" cx="433"  cy="641" r="130" fill="url(#haloOchre)"/>
+        <circle class="glow-pulse fast" cx="1654" cy="696" r="95"  fill="url(#haloPearl)"/>
+      </g>
+
+      <!-- ============ mid-ground mangrove (right) ============ -->
+      <g fill="#050c09">
+        <!-- trunk -->
+        <path d="M1408,600 q-14,-150 22,-262 q10,-34 34,-58 l30,6 q-30,40 -34,76
+                 q-24,116 -10,238 Z"/>
+        <!-- canopy blobs -->
+        <g filter="url(#blurMed)" opacity="0.95">
+          <ellipse cx="1470" cy="268" rx="190" ry="92"/>
+          <ellipse cx="1332" cy="304" rx="130" ry="66"/>
+          <ellipse cx="1590" cy="312" rx="126" ry="60"/>
+          <ellipse cx="1500" cy="216" rx="118" ry="54"/>
+        </g>
+        <!-- stilt roots arching into the water -->
+        <g stroke="#050c09" fill="none" stroke-linecap="round">
+          <path d="M1430,470 C1398,540 1330,570 1252,596"  stroke-width="20"/>
+          <path d="M1442,506 C1428,566 1380,600 1310,616"  stroke-width="15"/>
+          <path d="M1462,452 C1508,530 1580,576 1668,600"  stroke-width="19"/>
+          <path d="M1452,500 C1482,562 1536,598 1600,614"  stroke-width="13"/>
+          <path d="M1420,540 C1408,590 1392,626 1370,660"  stroke-width="11"/>
+        </g>
+      </g>
+      <!-- warm rim light on the trunk edge facing the ochre light -->
+      <path d="M1462,286 q26,120 12,300" stroke="url(#rimWarm)" stroke-width="5" fill="none" opacity="0.8" filter="url(#blurTiny)"/>
+      <path d="M1466,456 C1512,532 1582,578 1666,600" stroke="url(#rimWarm)" stroke-width="4" fill="none" opacity="0.6"/>
+
+      <!-- ============ mid-ground mangrove (left) ============ -->
+      <g fill="#050c09">
+        <path d="M300,620 q-10,-130 16,-224 q8,-28 28,-48 l24,6 q-24,32 -28,62
+                 q-18,100 -8,204 Z"/>
+        <g filter="url(#blurMed)" opacity="0.95">
+          <ellipse cx="345" cy="342" rx="150" ry="72"/>
+          <ellipse cx="238" cy="372" rx="100" ry="50"/>
+          <ellipse cx="452" cy="374" rx="96"  ry="46"/>
+        </g>
+        <g stroke="#050c09" fill="none" stroke-linecap="round">
+          <path d="M320,470 C288,540 226,580 150,606" stroke-width="17"/>
+          <path d="M334,504 C320,562 274,598 206,616" stroke-width="12"/>
+          <path d="M348,462 C392,536 452,584 528,610" stroke-width="16"/>
+          <path d="M340,520 C360,578 402,612 462,628" stroke-width="10"/>
+        </g>
+      </g>
+      <path d="M366,352 q22,110 10,268" stroke="url(#rimPearl)" stroke-width="4" fill="none" opacity="0.7" filter="url(#blurTiny)"/>
+
+      <!-- ============ froglights nestled on the roots ============ -->
+      <!-- big ochre -->
+      <g class="glow-pulse slow">
+        <circle cx="1521" cy="562" r="26" fill="url(#coreOchre)"/>
+        <circle cx="1521" cy="562" r="26" fill="none" stroke="#fff3cf" stroke-opacity="0.35" stroke-width="1.5"/>
+      </g>
+      <!-- pearlescent pair -->
+      <g class="glow-pulse">
+        <circle cx="1213" cy="606" r="20" fill="url(#corePearl)"/>
+        <circle cx="1236" cy="618" r="11" fill="url(#corePearl)" opacity="0.9"/>
+      </g>
+      <!-- rose -->
+      <g class="glow-pulse fast">
+        <circle cx="901" cy="657" r="15" fill="url(#coreRose)"/>
+      </g>
+      <!-- left ochre cluster on the roots -->
+      <g class="glow-pulse slow">
+        <circle cx="433" cy="641" r="18" fill="url(#coreOchre)"/>
+        <circle cx="456" cy="652" r="10" fill="url(#coreOchre)" opacity="0.9"/>
+      </g>
+      <!-- foreground pearlescent -->
+      <g class="glow-pulse fast">
+        <circle cx="1654" cy="696" r="14" fill="url(#corePearl)"/>
+      </g>
+
+      <!-- ============ the frog (blocky, Minecraft-style) ============ -->
+      <!-- sits on a root just left of the pearlescent lights -->
+      <g transform="translate(1268, 632)">
+        <!-- soft shadow -->
+        <ellipse cx="26" cy="40" rx="34" ry="7" fill="#000" opacity="0.45" filter="url(#blurTiny)"/>
+        <!-- back legs -->
+        <rect x="-2"  y="16" width="14" height="14" rx="2" fill="#c96a24"/>
+        <rect x="36"  y="16" width="14" height="14" rx="2" fill="#b85e1e"/>
+        <!-- body -->
+        <rect x="2"   y="0"  width="44" height="30" rx="4" fill="#f2913d"/>
+        <rect x="2"   y="22" width="44" height="8"  rx="2" fill="#ffd9a6"/>
+        <!-- head -->
+        <rect x="8"   y="-12" width="32" height="18" rx="3" fill="#ff9f4a"/>
+        <rect x="8"   y="-1"  width="32" height="7"  rx="2" fill="#ffd9a6"/>
+        <!-- eyes -->
+        <rect x="10"  y="-18" width="10" height="10" rx="2" fill="#ffae5c"/>
+        <rect x="28"  y="-18" width="10" height="10" rx="2" fill="#ffae5c"/>
+        <rect x="12"  y="-16" width="6"  height="7"  rx="1" fill="#101410"/>
+        <rect x="30"  y="-16" width="6"  height="7"  rx="1" fill="#101410"/>
+        <rect x="13"  y="-15" width="2"  height="2"  fill="#eafff0" opacity="0.9"/>
+        <rect x="31"  y="-15" width="2"  height="2"  fill="#eafff0" opacity="0.9"/>
+        <!-- front feet -->
+        <rect x="8"   y="28"  width="10" height="6" rx="2" fill="#e07f2e"/>
+        <rect x="32"  y="28"  width="10" height="6" rx="2" fill="#e07f2e"/>
+        <!-- warm rim light from the pearlescent froglight -->
+        <rect x="44"  y="-12" width="3"  height="42" rx="2" fill="#ffd9f2" opacity="0.55"/>
+        <rect x="38"  y="-18" width="4"  height="10" rx="2" fill="#ffe9f8" opacity="0.4"/>
+      </g>
+
+      <!-- ============ foreground roots ============ -->
+      <g stroke="#040907" fill="none" stroke-linecap="round">
+        <path d="M-40,900 C220,830 520,846 760,912 C980,972 1240,1000 1520,966" stroke-width="34"/>
+        <path d="M-40,1000 C280,920 640,940 960,1006 C1240,1064 1600,1070 1960,1020" stroke-width="44"/>
+        <path d="M1980,760 C1740,800 1560,860 1460,960" stroke-width="26"/>
+        <path d="M1980,880 C1820,900 1700,946 1630,1040" stroke-width="20"/>
+        <path d="M-40,760 C120,780 240,824 320,900" stroke-width="18"/>
+        <path d="M690,912 C676,964 682,1014 700,1060" stroke-width="12"/>
+        <path d="M1180,986 C1188,1024 1186,1054 1176,1080" stroke-width="10"/>
+      </g>
+      <!-- rim light along the top of the big foreground root -->
+      <g stroke="none" fill="none">
+        <path d="M-40,884 C220,814 520,830 760,896 C980,956 1240,984 1520,950"
+              stroke="url(#rimWarm)" stroke-width="4" opacity="0.5" filter="url(#blurTiny)"/>
+        <path d="M1980,748 C1740,788 1560,848 1460,948"
+              stroke="url(#rimPearl)" stroke-width="4" opacity="0.45" filter="url(#blurTiny)"/>
+      </g>
+
+      <!-- ============ water ripples ============ -->
+      <g stroke="#7fd8b4" fill="none" stroke-width="1.6">
+        <ellipse class="ripple" cx="1213" cy="662" rx="52" ry="10" opacity="0.4"/>
+        <ellipse class="ripple" cx="1213" cy="662" rx="86" ry="16" opacity="0.28"/>
+        <ellipse class="ripple" cx="1521" cy="612" rx="60" ry="11" opacity="0.35"/>
+        <ellipse class="ripple" cx="433"  cy="676" rx="48" ry="9"  opacity="0.35"/>
+        <ellipse class="ripple" cx="901"  cy="684" rx="40" ry="8"  opacity="0.3"/>
+        <ellipse class="ripple" cx="760"  cy="760" rx="72" ry="12" opacity="0.22"/>
+        <ellipse class="ripple" cx="1654" cy="726" rx="44" ry="9"  opacity="0.26"/>
+        <ellipse class="ripple" cx="300"  cy="820" rx="66" ry="11" opacity="0.18"/>
+        <ellipse class="ripple" cx="1380" cy="800" rx="58" ry="10" opacity="0.2"/>
+      </g>
+
+      <!-- rain + fireflies are injected here by the script -->
+      <g id="fx"></g>
+
+      <!-- painterly grain over the whole scene -->
+      <rect width="1920" height="1080" filter="url(#grain)" opacity="0.55"/>
+    </svg>
+  </div>
+  <div class="tint"></div>
+
+  <!-- ===================== WINDOW CONTROLS (кастомная рамка) ===================== -->
+  <div class="win-drag"></div>
+  <div class="win-controls">
+    <button class="win-btn" id="winMin" title="Свернуть" aria-label="Свернуть">
+      <svg viewBox="0 0 12 12"><line x1="2" y1="6" x2="10" y2="6"/></svg>
+    </button>
+    <button class="win-btn win-close" id="winClose" title="Закрыть" aria-label="Закрыть">
+      <svg viewBox="0 0 12 12"><path d="M3 3l6 6M9 3l-6 6" fill="none"/></svg>
+    </button>
+  </div>
+
+  <!-- ===================== LEFT SIDEBAR ===================== -->
+  <nav class="sidebar" aria-label="Main navigation">
+
+    <!-- Servers: three stacked cylinders -->
+    <button class="nav-btn" id="btn-servers" title="Серверы" aria-label="Серверы">
+      <svg viewBox="0 0 24 24" fill="none">
+        <g stroke="currentColor" stroke-width="1.7">
+          <ellipse cx="12" cy="5"  rx="7.5" ry="2.9"/>
+          <path d="M4.5 5v4.2c0 1.6 3.4 2.9 7.5 2.9s7.5-1.3 7.5-2.9V5"/>
+          <path d="M4.5 10.3v4.2c0 1.6 3.4 2.9 7.5 2.9s7.5-1.3 7.5-2.9v-4.2"/>
+          <path d="M4.5 14.5v4.2c0 1.6 3.4 2.9 7.5 2.9s7.5-1.3 7.5-2.9v-4.2"/>
+        </g>
+      </svg>
+    </button>
+
+    <!-- Game Profiles / Аккаунты: classic Creeper face -->
+    <button class="nav-btn" id="btn-accounts" title="Аккаунты" aria-label="Аккаунты">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <rect x="2"  y="2"  width="20" height="20" rx="3.5" fill="none" stroke="currentColor" stroke-width="1.7"/>
+        <rect x="6"  y="7"  width="4"  height="4"  rx="0.5"/>
+        <rect x="14" y="7"  width="4"  height="4"  rx="0.5"/>
+        <rect x="10" y="12" width="4"  height="4"  rx="0.5"/>
+        <rect x="8"  y="14" width="2"  height="5"  rx="0.5"/>
+        <rect x="14" y="14" width="2"  height="5"  rx="0.5"/>
+        <rect x="10" y="16" width="4"  height="3"  rx="0.5"/>
+      </svg>
+    </button>
+
+    <!-- Home: house outline -->
+    <button class="nav-btn active" id="btn-home" title="Home" aria-label="Home" aria-current="page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3.5 10.6 12 3.4l8.5 7.2"/>
+        <path d="M5.4 12.2V20a1 1 0 0 0 1 1h11.2a1 1 0 0 0 1-1v-7.8"/>
+        <path d="M9.6 21v-5.6a2.4 2.4 0 0 1 4.8 0V21"/>
+      </svg>
+    </button>
+
+    <!-- Library: tilted books -> список сборок -->
+    <button class="nav-btn" id="btn-library" title="Сборки" aria-label="Сборки">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3.2" y="12.6" width="4.4" height="8.2" rx="1" transform="rotate(-13 5.4 16.7)"/>
+        <rect x="9.4" y="11.8" width="4.4" height="9"  rx="1" transform="rotate(-3  11.6 16.3)"/>
+        <rect x="15.6" y="12.2" width="4.4" height="8.6" rx="1" transform="rotate(9 17.8 16.5)"/>
+        <path d="M4.1 15.1l3.4-.8M4.6 18.2l3.4-.8"/>
+      </svg>
+    </button>
+
+    <!-- Skin: player head silhouette -> Скины -->
+    <button class="nav-btn" id="btn-skins" title="Скины" aria-label="Скины">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round">
+        <rect x="7" y="3.5" width="10" height="7.5" rx="1.6"/>
+        <path d="M9.6 6.6h1.2M13.2 6.6h1.2" stroke-linecap="round"/>
+        <path d="M12 11v2.2M12 13.2c-3.4 0-5.2 1.6-5.6 4.6-.1.9-.1 1.8-.1 2.7h11.4c0-.9 0-1.8-.1-2.7-.4-3-2.2-4.6-5.6-4.6z"/>
+      </svg>
+    </button>
+
+    <!-- Mods: только для сборок с загрузчиком (не Vanilla) -->
+    <button class="nav-btn" id="btn-mods" title="Моды" aria-label="Моды" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round">
+        <path d="M10 4a2 2 0 1 1 4 0h3.2a1 1 0 0 1 1 1V9a2 2 0 1 0 0 4v3.2a1 1 0 0 1-1 1H14a2 2 0 1 0-4 0H6.8a1 1 0 0 1-1-1V13a2 2 0 1 1 0-4V5a1 1 0 0 1 1-1z"/>
+      </svg>
+    </button>
+
+    <div class="nav-spacer"></div>
+
+    <div class="status-pip"><i></i><span>ONLINE</span></div>
+
+    <!-- Settings: gear at the bottom -->
+    <button class="nav-btn" id="btn-settings" title="Настройки" aria-label="Настройки">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3.1"/>
+        <path d="M19.4 14.6a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.84 2.84l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.55V21a2 2 0 1 1-4 0v-.11a1.7 1.7 0 0 0-1.11-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.84-2.84l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1.03H3a2 2 0 1 1 0-4h.11a1.7 1.7 0 0 0 1.55-1.11 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.84-2.84l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1.03-1.55V3a2 2 0 1 1 4 0v.11a1.7 1.7 0 0 0 1.03 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.84 2.84l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.55 1.03H21a2 2 0 1 1 0 4h-.11a1.7 1.7 0 0 0-1.49.97z"/>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- ===================== MAIN STAGE ===================== -->
+  <main class="stage">
+
+    <!-- Top header banner -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">
+          <!-- mini creeper mark -->
+          <svg viewBox="0 0 24 24" fill="#55ff55">
+            <rect x="4"  y="6"  width="4"  height="4"  rx="0.5"/>
+            <rect x="16" y="6"  width="4"  height="4"  rx="0.5"/>
+            <rect x="10" y="11" width="4"  height="4"  rx="0.5"/>
+            <rect x="8"  y="13" width="2"  height="5"  rx="0.5"/>
+            <rect x="14" y="13" width="2"  height="5"  rx="0.5"/>
+            <rect x="10" y="15" width="4"  height="3"  rx="0.5"/>
+          </svg>
+        </div>
+        <h1>C Minerva Launcher</h1>
+        <div class="sep"></div>
+        <div class="tag">The Wild Update</div>
+      </div>
+    </header>
+
+    <!-- ===== VIEW: СБОРКИ ===== -->
+    <section class="builds-view" id="buildsView" hidden>
+      <div class="builds-head">
+        <div class="builds-title">
+          <span class="dot"></span>Сборки
+          <span class="builds-count" id="buildsCount">0</span>
+        </div>
+        <div class="builds-actions">
+          <select class="acct-type" id="buildsGroup" title="Группировка сборок">
+            <option value="none">Без групп</option>
+            <option value="version">По версии игры</option>
+            <option value="loader">По загрузчику</option>
+            <option value="status">По статусу</option>
+          </select>
+          <button class="btn-ghost small" id="btnImportBuild" title="Импортировать сборку из файла .ccli">Импорт .ccli</button>
+          <button class="btn-add" id="btnAddBuild">+ Добавить сборку</button>
+        </div>
+      </div>
+      <input type="file" id="ccliFile" accept=".ccli,text/plain" hidden />
+      <div class="builds-list" id="buildsList"></div>
+    </section>
+
+    <!-- ===== VIEW: АККАУНТЫ ===== -->
+    <section class="builds-view" id="accountsView" hidden>
+      <div class="builds-head">
+        <div class="builds-title">
+          <span class="dot"></span>Аккаунты
+          <span class="builds-count" id="accountsCount">0</span>
+        </div>
+        <div class="acct-add">
+          <select class="acct-type" id="accountType" title="Тип аккаунта">
+            <option value="offline">Offline</option>
+            <option value="elyby">ELY.by</option>
+          </select>
+          <input type="text" id="accountName" placeholder="Ник: 3–16, A-Z 0-9 _" maxlength="16"
+                 autocomplete="off" spellcheck="false" />
+          <input type="password" id="accountPass" placeholder="Пароль ELY.by (пусто — только ник)"
+                 autocomplete="off" spellcheck="false" hidden />
+          <button class="btn-add" id="btnAddAccount">+ Добавить</button>
+        </div>
+      </div>
+      <div class="builds-list" id="accountsList"></div>
+    </section>
+
+    <!-- ===== VIEW: СКИНЫ ===== -->
+    <section class="builds-view" id="skinsView" hidden>
+      <div class="builds-head">
+        <div class="builds-title">
+          <span class="dot"></span>Скины
+          <span class="builds-count" id="skinsCount">0</span>
+        </div>
+        <div class="skins-tools">
+          <input type="text" id="skinNick" placeholder="Ник (ely.by)" maxlength="16"
+                 autocomplete="off" spellcheck="false" />
+          <button class="btn-add" id="btnSkinFetch" title="Забрать текущий скин игрока с ely.by по нику">Взять скин</button>
+          <button class="btn-ghost small" id="btnSkinRefreshAll"
+                  title="Обновить скины всех ELY.by-аккаунтов">↻ С ely.by</button>
+          <button class="btn-ghost small" id="btnSkinAdd"
+                  title="Добавить PNG-файлы скинов из любой папки">+ Файлы</button>
+          <button class="btn-ghost small" id="btnSkinFolder"
+                  title="Открыть папку скинов лаунчера">Папка</button>
+        </div>
+      </div>
+      <p class="skins-hint" id="skinsHint">Кликните по скину — он сразу применится к активному аккаунту.
+        Скины ELY.by-аккаунтов берутся с ely.by автоматически при входе,
+        и в игре отображаются реально (лаунчер сам подключает authlib-injector при запуске).</p>
+      <div class="builds-list skins-grid" id="skinsList"></div>
+    </section>
+
+    <!-- ===== VIEW: НАСТРОЙКИ ===== -->
+    <section class="builds-view settings-view" id="settingsView" hidden>
+      <div class="builds-head">
+        <div class="builds-title">
+          <span class="dot"></span>Настройки
+          <span class="settings-dirty" id="settingsDirty" hidden>не сохранено</span>
+        </div>
+        <div class="settings-actions">
+          <button class="btn-ghost" id="btnSettingsReset">Сбросить</button>
+          <button class="btn-add" id="btnSettingsSave">Сохранить</button>
+        </div>
+      </div>
+
+      <div class="settings-tabs" id="settingsTabs">
+        <button class="stab active" data-tab="java">Java</button>
+        <button class="stab" data-tab="builds">Сборки</button>
+        <button class="stab" data-tab="launch">Запуск</button>
+        <button class="stab" data-tab="accounts">Аккаунты</button>
+        <button class="stab" data-tab="servers">Серверы</button>
+        <button class="stab" data-tab="downloads">Загрузки</button>
+        <button class="stab" data-tab="content">Контент</button>
+        <button class="stab" data-tab="ui">Интерфейс</button>
+        <button class="stab" data-tab="folders">Папки</button>
+      </div>
+
+      <div class="settings-body" id="settingsBody">
+
+        <!-- ===== JAVA ===== -->
+        <div class="settings-pane active" data-pane="java">
+          <div class="sp-group">
+            <div class="sp-label">Выбор версии Java</div>
+            <div class="seg" id="segJavaMode">
+              <button type="button" class="seg-btn" data-value="auto">Авто</button>
+              <button type="button" class="seg-btn" data-value="force">Принудительно</button>
+            </div>
+            <p class="sp-hint">«Авто» — лаунчер сам подбирает Java под версию Minecraft (для каждой сборки свою).</p>
+          </div>
+
+          <div class="sp-group" id="forceJavaGroup">
+            <div class="sp-label">Принудительная версия Java — для всех сборок</div>
+            <select class="sp-input" id="javaForceMajor"></select>
+            <p class="sp-hint">Применяется ко всем сборкам, у которых не задана своя версия (вкладка «Сборки»).</p>
+          </div>
+
+          <div class="sp-checks">
+            <label class="check"><input type="checkbox" id="javaRequireExact" /><span class="box"></span>
+              Только точная версия — не использовать более новую</label>
+            <label class="check"><input type="checkbox" id="javaPreferBundled" /><span class="box"></span>
+              Сначала встроенная Java, потом системная</label>
+          </div>
+
+          <div class="sp-group">
+            <div class="sp-label">JVM-флаги по умолчанию</div>
+            <input class="sp-input mono" id="javaJvmArgs" spellcheck="false"
+                   placeholder="-XX:+UseG1GC -XX:MaxGCPauseMillis=50" />
+            <p class="sp-hint">Добавляются ко всем сборкам. Кавычки можно использовать для значений с пробелами.</p>
+          </div>
+
+          <div class="sp-group">
+            <div class="sp-label">Своя Java (вместо авто-подбора)</div>
+            <div class="sp-inline">
+              <input class="sp-input mono" id="javaCustomPath" spellcheck="false"
+                     placeholder="пусто — подбирать автоматически" />
+              <button class="btn-ghost" id="btnPickJava">Обзор…</button>
+            </div>
+            <p class="sp-hint">Путь к файлу <b>java</b> (Linux/macOS) или <b>javaw.exe</b> (Windows).
+              Если файл не найден, лаунчер вернётся к авто-подбору.</p>
+          </div>
+
+          <div class="sp-checks">
+            <label class="check"><input type="checkbox" id="memAuto" /><span class="box"></span>
+              Умное распределение ОЗУ — лаунчер сам подбирает память по версии и количеству модов</label>
+          </div>
+
+          <div class="sp-group" id="memManualGroup">
+            <div class="sp-label">Память по умолчанию</div>
+            <div class="sp-inline">
+              <label class="sp-mini">Xms (старт)<input class="sp-input" id="memMin" placeholder="512M" /></label>
+              <label class="sp-mini">Xmx (максимум)<input class="sp-input" id="memMax" placeholder="2G" /></label>
+            </div>
+            <p class="sp-hint">Ручные значения — когда умное распределение выключено. Переопределение для
+              конкретной сборки (вкладка «Сборки») всегда главнее.</p>
+          </div>
+        </div>
+
+        <!-- ===== СБОРКИ ===== -->
+        <div class="settings-pane" data-pane="builds">
+          <p class="sp-hint">Свои параметры для конкретной сборки. «Как в общих» — берутся значения со вкладки Java.</p>
+          <div class="pb-list" id="perBuildList"></div>
+        </div>
+
+        <!-- ===== ЗАПУСК ===== -->
+        <div class="settings-pane" data-pane="launch">
+          <div class="sp-group">
+            <div class="sp-label">Обход проблемы LWJGL 2 (Minecraft 1.12.2 и старше)</div>
+            <div class="seg" id="segLwjgl2">
+              <button type="button" class="seg-btn" data-value="auto">Авто</button>
+              <button type="button" class="seg-btn" data-value="always">Всегда</button>
+              <button type="button" class="seg-btn" data-value="never">Выключено</button>
+            </div>
+            <p class="sp-hint">LWJGL 2 берёт список экранов у утилиты <b>xrandr</b>. Если её нет, игра падает при
+              запуске на <span class="mono">ArrayIndexOutOfBoundsException</span>. «Авто» включает обход только
+              тогда, когда утилиты нет.</p>
+          </div>
+
+          <div class="sp-group">
+            <div class="sp-label">Дополнительные аргументы игры</div>
+            <input class="sp-input mono" id="launchExtraArgs" spellcheck="false" placeholder="--fullscreen" />
+          </div>
+
+          <div class="sp-group">
+            <div class="sp-label">Окно игры</div>
+            <div class="sp-inline">
+              <label class="sp-mini">Ширина<input class="sp-input" id="launchWidth" type="number"
+                min="0" max="7680" placeholder="как в игре" /></label>
+              <label class="sp-mini">Высота<input class="sp-input" id="launchHeight" type="number"
+                min="0" max="4320" placeholder="как в игре" /></label>
+            </div>
+            <div class="sp-checks">
+              <label class="check"><input type="checkbox" id="launchFullscreen" /><span class="box"></span>
+                Полный экран</label>
+            </div>
+            <p class="sp-hint">Пустые поля — разрешение по умолчанию (или как задано в аргументах игры).</p>
+          </div>
+
+          <div class="sp-checks">
+            <label class="check"><input type="checkbox" id="launchMinimize" /><span class="box"></span>
+              Сворачивать лаунчер при запуске игры</label>
+            <label class="check"><input type="checkbox" id="launchClose" /><span class="box"></span>
+              Закрывать лаунчер после запуска игры</label>
+            <label class="check"><input type="checkbox" id="launchAutoConsole" /><span class="box"></span>
+              Открывать консоль автоматически</label>
+            <label class="check"><input type="checkbox" id="launchLogToFile" /><span class="box"></span>
+              Сохранять лог игры в файл (папка ver/logs)</label>
+          </div>
+        </div>
+
+        <!-- ===== АККАУНТЫ ===== -->
+        <div class="settings-pane" data-pane="accounts">
+          <div class="sp-checks">
+            <label class="check"><input type="checkbox" id="accValidate" /><span class="box"></span>
+              Проверять и обновлять сессию ELY.by перед запуском</label>
+          </div>
+          <p class="sp-hint">Перед запуском лаунчер делает <b>validate → refresh</b> токена, чтобы игра
+            получила свежий сеанс. Отключайте, если вход по токену не нужен или устаревший токен
+            и так не мешает запуску.</p>
+        </div>
+
+        <!-- ===== СЕРВЕРЫ ===== -->
+        <div class="settings-pane" data-pane="servers">
+          <div class="sp-inline">
+            <label class="sp-mini">Xms сервера<input class="sp-input" id="srvMemMin"
+              placeholder="как в общих" /></label>
+            <label class="sp-mini">Xmx сервера<input class="sp-input" id="srvMemMax"
+              placeholder="как в общих" /></label>
+          </div>
+          <p class="sp-hint">Память по умолчанию для всех серверов в папке <b>serv/</b>.
+            Свои значения у конкретного сервера (в его настройках) главнее.</p>
+
+          <div class="sp-group">
+            <div class="sp-label">Доп. JVM-флаги только для серверов</div>
+            <input class="sp-input mono" id="srvJvmArgs" spellcheck="false"
+                   placeholder="-XX:+UseG1GC" />
+            <p class="sp-hint">Добавляются к общим JVM-флагам при запуске серверов (не игр).</p>
+          </div>
+        </div>
+
+        <!-- ===== ЗАГРУЗКИ ===== -->
+        <div class="settings-pane" data-pane="downloads">
+          <div class="sp-inline">
+            <label class="sp-mini">Одновременных загрузок<input class="sp-input" id="dlConcurrency"
+              type="number" min="1" max="32" /></label>
+            <label class="sp-mini">Попыток на файл<input class="sp-input" id="dlAttempts"
+              type="number" min="1" max="10" /></label>
+          </div>
+          <div class="sp-group">
+            <div class="sp-label">Зеркало ресурсов (assets)</div>
+            <input class="sp-input mono" id="dlResources" spellcheck="false"
+                   placeholder="https://resources.download.minecraft.net" />
+          </div>
+          <div class="sp-group">
+            <div class="sp-label">Зеркало библиотек</div>
+            <input class="sp-input mono" id="dlLibraries" spellcheck="false"
+                   placeholder="https://libraries.minecraft.net" />
+          </div>
+          <div class="sp-inline">
+            <label class="sp-mini">Таймаут без байтов (сек)<input class="sp-input" id="dlIdle"
+              type="number" min="5" max="600" /></label>
+          </div>
+          <p class="sp-hint">Меняйте только при использовании прокси или зеркала. Пустое поле вернёт адреса Mojang.</p>
+        </div>
+
+        <!-- ===== КОНТЕНТ (моды/ресурсы) ===== -->
+        <div class="settings-pane" data-pane="content">
+          <div class="sp-group">
+            <div class="sp-label">Источник по умолчанию</div>
+            <select class="sp-input" id="contentSource">
+              <option value="modrinth">Modrinth</option>
+              <option value="curseforge">CurseForge</option>
+            </select>
+            <p class="sp-hint">Где искать моды, ресурс-паки, шейдеры и модпаки во вкладке «Моды».</p>
+          </div>
+
+          <div class="sp-group">
+            <div class="sp-label">CurseForge API-ключ</div>
+            <input class="sp-input mono" id="cfKey" spellcheck="false" autocomplete="off"
+                   placeholder="вставьте ключ с console.curseforge.com" />
+            <p class="sp-hint">Без ключа CurseForge недоступен. Ключ бесплатный, выдаётся на сайте
+              <b>console.curseforge.com</b> → «API Keys».</p>
+          </div>
+
+          <div class="sp-checks">
+            <label class="check"><input type="checkbox" id="elyTextures" /><span class="box"></span>
+              Скачивать скины с ely.by для 3D-превью и аватаров</label>
+          </div>
+          <p class="sp-hint">Если включено — показывает скины с ely.by в лаунчере (отображение <b>в игре</b>
+            зависит от authlib-injector). Отключение снижает обращения к ely.by.</p>
+        </div>
+
+        <!-- ===== ИНТЕРФЕЙС ===== -->
+        <div class="settings-pane" data-pane="ui">
+          <div class="sp-checks">
+            <label class="check"><input type="checkbox" id="uiAnimations" /><span class="box"></span>
+              Анимации интерфейса</label>
+            <label class="check"><input type="checkbox" id="uiAutoscroll" /><span class="box"></span>
+              Автопрокрутка консоли</label>
+            <label class="check"><input type="checkbox" id="uiConfirmDel" /><span class="box"></span>
+              Спрашивать подтверждение при удалении сборок/модов/серверов</label>
+          </div>
+          <div class="sp-group">
+            <div class="sp-label">Масштаб интерфейса (применяется сразу)</div>
+            <div class="sp-inline">
+              <label class="sp-mini">Scale (0.6 — 2.0)<input class="sp-input" id="uiScale"
+                type="number" step="0.05" min="0.6" max="2.0" /></label>
+              <span class="sp-hint">100% = 1.0</span>
+            </div>
+          </div>
+          <div class="sp-group">
+            <div class="sp-label">Группировка сборок по умолчанию</div>
+            <select class="sp-input" id="uiBuildsGroup">
+              <option value="none">Без групп</option>
+              <option value="version">По версии игры</option>
+              <option value="loader">По загрузчику</option>
+              <option value="status">По статусу</option>
+            </select>
+          </div>
+          <p class="sp-hint">Отключение анимаций может помочь на слабых машинах.</p>
+        </div>
+
+        <!-- ===== ПАПКИ ===== -->
+        <div class="settings-pane" data-pane="folders">
+          <div class="sp-group">
+            <div class="sp-label">Быстрый доступ к папкам лаунчера</div>
+            <div class="sp-inline" style="flex-wrap: wrap; gap: 6px;">
+              <button class="btn-ghost" id="openRoot">Корень лаунчера</button>
+              <button class="btn-ghost" id="openVer">Папка ver/</button>
+              <button class="btn-ghost" id="openServ">Папка serv/</button>
+              <button class="btn-ghost" id="openSkins">Папка skins/</button>
+              <button class="btn-ghost" id="openJava">Папка java/</button>
+              <button class="btn-ghost" id="openLogs">Папка logs/</button>
+            </div>
+            <p class="sp-hint">Открывают проводник в нужной папке.</p>
+          </div>
+          <div class="sp-group">
+            <div class="sp-label">Справка</div>
+            <p class="sp-hint">Тут собраны основные настройки. Если не хватает пункта — в будущем можно
+              расширить ещё.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== VIEW: МОДЫ ===== -->
+    <section class="builds-view mods-view" id="modsView" hidden>
+      <div class="builds-head">
+        <div class="builds-title">
+          <span class="dot"></span>Моды
+          <span class="builds-count" id="modsBuildName">—</span>
+        </div>
+        <div class="mods-search">
+          <select class="sp-input mods-source" id="modsSource" title="Источник">
+            <option value="modrinth">Modrinth</option>
+            <option value="curseforge" disabled>CurseForge (нужен API-ключ)</option>
+          </select>
+          <input type="text" id="modsQuery" placeholder="Поиск по названию…"
+                 autocomplete="off" spellcheck="false" />
+          <button class="btn-add" id="modsSearchBtn">Найти</button>
+        </div>
+      </div>
+
+      <div class="settings-tabs" id="modsTabs">
+        <button class="stab active" data-modtab="mods">Моды</button>
+        <button class="stab" data-modtab="modpacks">Модпаки</button>
+        <button class="stab" data-modtab="resourcepacks">Ресурс-паки</button>
+        <button class="stab" data-modtab="texturepacks">Текстур-паки</button>
+        <button class="stab" data-modtab="worlds">Миры</button>
+        <button class="stab" data-modtab="shaders">Шейдер-паки</button>
+      </div>
+
+      <div class="builds-list" id="modsList"></div>
+    </section>
+
+    <!-- ===== VIEW: СЕРВЕРЫ ===== -->
+    <section class="builds-view servers-view" id="serversView" hidden>
+      <div class="builds-head">
+        <div class="builds-title">
+          <span class="dot"></span>Серверы
+          <span class="builds-count" id="serversCount">0</span>
+        </div>
+        <button class="btn-add" id="btnAddServer">+ Новый сервер</button>
+      </div>
+
+      <div class="servers-body">
+        <div class="servers-list" id="serversList"></div>
+
+        <div class="servers-panel" id="serversPanel">
+          <div class="srv-empty" id="serversPanelEmpty">
+            Выберите сервер слева или создайте новый.<br>
+            <span class="dim">Ядра: Vanilla · Paper · Purpur · Fabric · Forge — всё в папке <b>serv/</b>.</span>
+          </div>
+
+          <div class="srv-inner" id="serversPanelInner" hidden>
+            <div class="srv-head">
+              <span class="console-dot idle" id="srvDot"></span>
+              <span class="srv-name" id="srvPanelName">—</span>
+              <span class="srv-core" id="srvPanelCore">—</span>
+              <span class="srv-state" id="srvPanelState"></span>
+              <span class="srv-spacer"></span>
+              <button class="bi-btn" id="srvBtnProps" title="server.properties и память">Свойства</button>
+              <button class="bi-btn" id="srvBtnFolder" title="Открыть папку сервера">Папка</button>
+              <button class="bi-btn bi-del-server" id="srvBtnDelete" title="Удалить сервер">×</button>
+              <button class="btn-ghost small" id="srvBtnStop" hidden>СТОП</button>
+              <button class="bi-btn bi-play" id="srvBtnStart">▶ Старт</button>
+            </div>
+            <div class="srv-console" id="srvConsole"></div>
+            <div class="srv-cmd">
+              <input type="text" id="srvCmdInput" placeholder="Команда серверу (say привет, op Nick, time set day)…"
+                     autocomplete="off" spellcheck="false" />
+              <button class="btn-add" id="srvCmdSend">Отправить</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== КОНСОЛЬ ЗАПУСКА ===== -->
+    <section class="console" id="gameConsole" hidden>
+      <div class="console-head">
+        <span class="console-dot idle" id="consoleDot"></span>
+        <span class="console-title" id="consoleTitle">Консоль</span>
+        <span class="console-state" id="consoleState">ожидание</span>
+        <button class="btn-ghost small" id="btnStopGame" hidden>СТОП</button>
+        <button class="console-close" id="btnCloseConsole" title="Скрыть">✕</button>
+      </div>
+      <div class="console-progress" id="consoleProgress" hidden>
+        <div id="consoleBar"></div>
+      </div>
+      <div class="console-log" id="consoleLog"></div>
+    </section>
+
+    <!-- ===== ТОСТ ===== -->
+    <div class="toast" id="toast" hidden></div>
+
+    <!-- Bottom control panel -->
+    <section class="controls">
+      <div class="badge" role="group" aria-label="Account">
+        <span class="label"><i></i>Account:</span>
+        <span class="value" id="accountValue">—</span>
+      </div>
+
+      <div class="badge" role="group" aria-label="Instance">
+        <span class="label"><i></i>Instance:</span>
+        <span class="value" id="instanceValue">—</span>
+      </div>
+
+      <button class="console-toggle" id="btnToggleConsole" title="Показать консоль" hidden>ЛОГ</button>
+
+      <button class="play" id="btnPlay" aria-label="Play">
+        <span class="tri"></span>PLAY
+      </button>
+    </section>
+
+  </main>
+
+  <!-- ===== MODAL: НОВАЯ СБОРКА ===== -->
+  <div class="modal-overlay" id="addModal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head" id="modalTitle">Новая сборка <span class="modal-sub">VANILLA</span></div>
+
+      <label class="field">
+        <span>Название сборки</span>
+        <input type="text" id="buildName" placeholder="Например: Выживание 1.20"
+               maxlength="40" autocomplete="off" />
+      </label>
+
+      <div class="field">
+        <span>Загрузчик модов</span>
+        <div class="loader-quick" id="loaderQuick">
+          <button type="button" class="lq" data-loader="vanilla">Vanilla</button>
+          <button type="button" class="lq" data-loader="fabric">Fabric</button>
+          <button type="button" class="lq" data-loader="quilt">Quilt</button>
+          <button type="button" class="lq" data-loader="forge">Forge</button>
+          <button type="button" class="lq" data-loader="neoforge">NeoForge</button>
+        </div>
+        <select id="buildLoader" hidden>
+          <option value="vanilla">Vanilla (без модов)</option>
+          <option value="fabric">Fabric</option>
+          <option value="quilt">Quilt</option>
+          <option value="forge">Forge</option>
+          <option value="neoforge">NeoForge</option>
+        </select>
+      </div>
+
+      <label class="field">
+        <span>Версия Minecraft <span class="field-hint">— начните печатать для фильтра</span></span>
+        <input type="text" id="buildVersionFilter" placeholder="Фильтр: 1.20, 24w, 1.21.3…"
+               autocomplete="off" spellcheck="false" />
+        <select id="buildVersion">
+          <option value="">Загрузка версий…</option>
+        </select>
+      </label>
+
+      <label class="field" id="loaderVersionField" hidden>
+        <span>Версия загрузчика</span>
+        <select id="buildLoaderVersion">
+          <option value="">Загрузка…</option>
+        </select>
+      </label>
+
+      <p class="modal-error" id="modalError" hidden></p>
+
+      <div class="progress" id="progressWrap" hidden>
+        <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+        <div class="progress-text" id="progressText">Подготовка…</div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-ghost" id="btnCancel">Отмена</button>
+        <button class="btn-neon" id="btnStartInstall">Скачать</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: РЕДАКТИРОВАНИЕ СБОРКИ ===== -->
+  <div class="modal-overlay" id="editModal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
+      <div class="modal-head" id="editModalTitle">Редактирование
+        <span class="modal-sub" id="editModalLoader">VANILLA</span>
+      </div>
+
+      <label class="field">
+        <span>Название сборки</span>
+        <input type="text" id="editName" maxlength="40" autocomplete="off" spellcheck="false" />
+      </label>
+
+      <div class="sp-inline">
+        <label class="sp-mini">Java<select class="sp-input" id="editJava"></select></label>
+        <label class="sp-mini">Xms<input class="sp-input" id="editMemMin" placeholder="как в общих" /></label>
+        <label class="sp-mini">Xmx<input class="sp-input" id="editMemMax" placeholder="как в общих" /></label>
+      </div>
+
+      <p class="modal-error" id="editError" hidden></p>
+
+      <div class="modal-actions">
+        <button class="btn-ghost" id="editCancel">Отмена</button>
+        <button class="btn-neon" id="editSave">Сохранить</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: НОВЫЙ СЕРВЕР ===== -->
+  <div class="modal-overlay" id="serverModal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="serverModalTitle">
+      <div class="modal-head" id="serverModalTitle">Новый сервер <span class="modal-sub">CORE</span></div>
+
+      <label class="field">
+        <span>Название сервера</span>
+        <input type="text" id="serverName" placeholder="Например: Друзья 1.21"
+               maxlength="40" autocomplete="off" spellcheck="false" />
+      </label>
+
+      <label class="field">
+        <span>Ядро сервера</span>
+        <select id="serverCore"></select>
+      </label>
+
+      <label class="field">
+        <span>Версия Minecraft</span>
+        <select id="serverVersion"><option value="">Загрузка версий…</option></select>
+      </label>
+
+      <label class="field" id="serverLoaderField" hidden>
+        <span>Версия ядра</span>
+        <select id="serverLoaderVersion"><option value="">Загрузка…</option></select>
+      </label>
+
+      <div class="sp-inline srv-mem">
+        <label class="sp-mini">Xms (старт)<input class="sp-input" id="serverMemMin" placeholder="512M" /></label>
+        <label class="sp-mini">Xmx (макс.)<input class="sp-input" id="serverMemMax" placeholder="2G" /></label>
+        <label class="sp-mini">Порт<input class="sp-input" id="serverPort" type="number" min="1" max="65535" placeholder="25565" /></label>
+      </div>
+
+      <label class="srv-eula"><input type="checkbox" id="serverEula" checked />
+        <span>Я принимаю Minecraft EULA (aka.ms/MinecraftEULA)</span></label>
+
+      <p class="modal-error" id="serverError" hidden></p>
+
+      <div class="progress" id="serverProgressWrap" hidden>
+        <div class="progress-track"><div class="progress-bar" id="serverProgressBar"></div></div>
+        <div class="progress-text" id="serverProgressText">Подготовка…</div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-ghost" id="serverCancel">Отмена</button>
+        <button class="btn-neon" id="serverCreate">Создать</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: ПАНЕЛЬ УПРАВЛЕНИЯ (СВОЙСТВА СЕРВЕРА) ===== -->
+  <div class="modal-overlay" id="propsModal" hidden>
+    <div class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="propsModalTitle">
+      <div class="modal-head" id="propsModalTitle">Панель управления
+        <span class="modal-sub" id="propsServerName"></span>
+      </div>
+
+      <div class="sp-group">
+        <div class="sp-label">Память запуска</div>
+        <div class="sp-inline">
+          <label class="sp-mini">Xms (пусто = как в общих)<input class="sp-input" id="propsMemMin" placeholder="как в общих" /></label>
+          <label class="sp-mini">Xmx (пусто = как в общих)<input class="sp-input" id="propsMemMax" placeholder="как в общих" /></label>
+        </div>
+        <p class="sp-hint">Скрипты запуска start.sh / start.bat обновляются автоматически.</p>
+      </div>
+
+      <div class="sp-group">
+        <div class="sp-label">server.properties</div>
+        <div class="props-list" id="propsList"></div>
+      </div>
+
+      <p class="modal-error" id="propsError" hidden></p>
+
+      <div class="modal-actions">
+        <button class="btn-ghost" id="propsCancel">Отмена</button>
+        <button class="btn-neon" id="propsSave">Сохранить</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: ЭКСПОРТ СБОРКИ (.ccli) ===== -->
+  <div class="modal-overlay" id="exportModal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="exportTitle">
+      <div class="modal-head" id="exportTitle">Экспорт сборки
+        <span class="modal-sub" id="exportBuildName">—</span>
+      </div>
+
+      <div class="ccli-summary" id="exportSummary">Подготовка…</div>
+
+      <label class="check ccli-check">
+        <input type="checkbox" id="exportConfigs" /><span class="box"></span>
+        <span>Добавить конфиги (папки <b>config/</b> и <b>defaultconfigs/</b>)</span>
+      </label>
+
+      <div class="field" id="exportModeField" hidden>
+        <span>Формат конфигов</span>
+        <div class="seg" id="exportModeSeg">
+          <button type="button" class="seg-btn active" data-cclimode="gz">Сжато (компактно)</button>
+          <button type="button" class="seg-btn" data-cclimode="text">Полностью текстом</button>
+        </div>
+      </div>
+
+      <p class="field-hint ccli-hint">В файл попадут только имена, версии и источники (Modrinth/CurseForge)
+        — сами файлы модов будут скачаны при импорте.</p>
+
+      <p class="modal-error" id="exportError" hidden></p>
+
+      <div class="modal-actions">
+        <button class="btn-ghost" id="exportCancel">Отмена</button>
+        <button class="btn-neon" id="exportDo">Экспортировать</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: ИМПОРТ СБОРКИ (.ccli) ===== -->
+  <div class="modal-overlay" id="importModal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="importTitle">
+      <div class="modal-head" id="importTitle">Импорт сборки
+        <span class="modal-sub" id="importFileName">—</span>
+      </div>
+
+      <div class="ccli-summary" id="importSummary">Чтение файла…</div>
+
+      <label class="field">
+        <span>Название новой сборки</span>
+        <input type="text" id="importName" maxlength="40" autocomplete="off" spellcheck="false" />
+      </label>
+
+      <label class="check ccli-check" id="importConfigsRow">
+        <input type="checkbox" id="importConfigs" checked /><span class="box"></span>
+        <span>Применить конфиги из файла</span>
+      </label>
+
+      <p class="modal-error" id="importError" hidden></p>
+
+      <div class="progress" id="importProgress" hidden>
+        <div class="progress-track"><div class="progress-bar" id="importBar"></div></div>
+        <div class="progress-text" id="importText">Подготовка…</div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-ghost" id="importCancel">Отмена</button>
+        <button class="btn-neon" id="importDo">Импортировать</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: ВЕРСИИ МОДА (изменить версию) ===== -->
+  <div class="modal-overlay" id="verModal" hidden>
+    <div class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="verTitle">
+      <div class="modal-head" id="verTitle">Изменить версию
+        <span class="modal-sub" id="verModName">—</span>
+      </div>
+
+      <div class="ver-list" id="verList"></div>
+
+      <p class="modal-hint" id="verHint">Кликните по версии — старый файл заменится на выбранный.</p>
+      <p class="modal-error" id="verError" hidden></p>
+
+      <div class="modal-actions">
+        <button class="btn-ghost" id="verClose">Закрыть</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="drop-hint" id="dropHint" hidden><b>Отпустите файл .ccli</b><span>сборка будет импортирована</span></div>
+
+</div>
+
+<!-- 3D-просмотрщик скинов (skinview3d, включает three.js) -->
+<script src="skinview3d.bundle.js"></script>
+
+<script>
+// ==== фоновая сцена: дождь и светлячки ====
+(function () {
+  const NS = "http://www.w3.org/2000/svg";
+  const fx = document.getElementById("fx");
+  const rand = (a, b) => a + Math.random() * (b - a);
+
+  for (let i = 0; i < 130; i++) {
+    const x = rand(-80, 2000);
+    const len = rand(16, 46);
+    const y = rand(-1260, 1080);
+    const line = document.createElementNS(NS, "line");
+    line.setAttribute("x1", x);
+    line.setAttribute("y1", y);
+    line.setAttribute("x2", x - len * 0.16);
+    line.setAttribute("y2", y + len);
+    line.setAttribute("stroke", Math.random() > 0.85 ? "#cdf5e2" : "#9fc9b8");
+    line.setAttribute("stroke-width", (Math.random() > 0.8 ? 1.4 : 0.9).toString());
+    line.setAttribute("opacity", rand(0.10, 0.30).toFixed(2));
+    line.setAttribute("class", "rain-line");
+    line.style.animationDuration = rand(0.55, 1.15).toFixed(2) + "s";
+    line.style.animationDelay = "-" + rand(0, 1.2).toFixed(2) + "s";
+    fx.appendChild(line);
+  }
+
+  const clusters = [
+    [1521, 540, 180, 10, "#ffd98a"],
+    [1213, 590, 150, 9,  "#f5b6e8"],
+    [433,  620, 140, 8,  "#ffd98a"],
+    [901,  645, 110, 6,  "#ffb3c4"],
+    [1300, 660, 220, 8,  "#c8f5d2"]
+  ];
+  clusters.forEach(function (c) {
+    const cx = c[0], cy = c[1], r = c[2], n = c[3], color = c[4];
+    for (let i = 0; i < n; i++) {
+      const mote = document.createElementNS(NS, "circle");
+      mote.setAttribute("cx", (cx + rand(-r, r)).toFixed(1));
+      mote.setAttribute("cy", (cy + rand(-r * 0.55, r * 0.55)).toFixed(1));
+      mote.setAttribute("r", rand(1, 2.4).toFixed(2));
+      mote.setAttribute("fill", color);
+      mote.setAttribute("class", "mote");
+      mote.style.animationDuration = rand(3, 7).toFixed(1) + "s";
+      mote.style.animationDelay = "-" + rand(0, 7).toFixed(1) + "s";
+      fx.appendChild(mote);
+    }
+  });
+})();
+</script>
+
+<script>
+// ==== логика сборок: список, добавление, скачивание ====
+(function () {
+  const $ = (id) => document.getElementById(id);
+
+  const buildsView = $("buildsView");
+  const listEl     = $("buildsList");
+  const countEl    = $("buildsCount");
+  const btnHome    = $("btn-home");
+  const btnLib     = $("btn-library");
+  const btnAdd     = $("btnAddBuild");
+  const winMinBtn  = $("winMin");
+  const winCloseBtn = $("winClose");
+  const modal      = $("addModal");
+  const nameIn     = $("buildName");
+  const verSel     = $("buildVersion");
+  const errEl      = $("modalError");
+  const progWrap   = $("progressWrap");
+  const barEl      = $("progressBar");
+  const textEl     = $("progressText");
+  const btnCancel  = $("btnCancel");
+  const btnStart   = $("btnStartInstall");
+  const instanceValue = $("instanceValue");
+
+  const accountsView  = $("accountsView");
+  const skinsView     = $("skinsView");
+  const accountsList  = $("accountsList");
+  const accountsCount = $("accountsCount");
+  const btnAcc        = $("btn-accounts");
+  const btnSkins      = $("btn-skins");
+  const accountNameIn = $("accountName");
+  const accountTypeSel = $("accountType");
+  const accountPassIn = $("accountPass");
+  const btnAddAccount = $("btnAddAccount");
+  const accountValue  = $("accountValue");
+
+  const consoleEl       = $("gameConsole");
+  const consoleLog      = $("consoleLog");
+  const consoleState    = $("consoleState");
+  const consoleDot      = $("consoleDot");
+  const consoleBar      = $("consoleBar");
+  const consoleProg     = $("consoleProgress");
+  const consoleTitle    = $("consoleTitle");
+  const btnStopGame     = $("btnStopGame");
+  const btnCloseConsole = $("btnCloseConsole");
+  const toastEl         = $("toast");
+  const btnPlay         = $("btnPlay");
+
+  const settingsView   = $("settingsView");
+  const btnSettings    = $("btn-settings");
+  const btnToggleConsole = $("btnToggleConsole");
+
+  const btnMods        = $("btn-mods");
+  const modsView       = $("modsView");
+  const modsList       = $("modsList");
+  const modsBuildName  = $("modsBuildName");
+  const modsTabs       = $("modsTabs");
+  const modsQuery      = $("modsQuery");
+  const modsSearchBtn  = $("modsSearchBtn");
+  const modsSource     = $("modsSource");
+
+  const loaderSel      = $("buildLoader");
+  const loaderVerField = $("loaderVersionField");
+  const loaderVerSel   = $("buildLoaderVersion");
+  const loaderQuick    = $("loaderQuick");
+  const verFilterIn    = $("buildVersionFilter");
+
+  // ---- экспорт / импорт .ccli ----
+  const btnImportBuild   = $("btnImportBuild");
+  const ccliFileInput    = $("ccliFile");
+  const exportModal      = $("exportModal");
+  const exportBuildName  = $("exportBuildName");
+  const exportSummary    = $("exportSummary");
+  const exportConfigs    = $("exportConfigs");
+  const exportModeField  = $("exportModeField");
+  const exportModeSeg    = $("exportModeSeg");
+  const exportErrorEl    = $("exportError");
+  const exportCancel     = $("exportCancel");
+  const exportDo         = $("exportDo");
+  const importModal      = $("importModal");
+  const importFileName   = $("importFileName");
+  const importSummary    = $("importSummary");
+  const importNameIn     = $("importName");
+  const importConfigsRow = $("importConfigsRow");
+  const importConfigs    = $("importConfigs");
+  const importErrorEl    = $("importError");
+  const importProgWrap   = $("importProgress");
+  const importBar        = $("importBar");
+  const importText       = $("importText");
+  const importCancel     = $("importCancel");
+  const importDo         = $("importDo");
+  const dropHint         = $("dropHint");
+
+  const editModal      = $("editModal");
+  const editNameIn     = $("editName");
+  const editJavaSel    = $("editJava");
+  const editMemMin     = $("editMemMin");
+  const editMemMax     = $("editMemMax");
+  const editErrorEl    = $("editError");
+  const editModalLoader = $("editModalLoader");
+  const btnEditSave    = $("editSave");
+  const btnEditCancel  = $("editCancel");
+
+  // ---- серверы ----
+  const btnServers       = $("btn-servers");
+  const serversView      = $("serversView");
+  const serversList      = $("serversList");
+  const serversCount     = $("serversCount");
+  const btnAddServer     = $("btnAddServer");
+  const serversPanel     = $("serversPanel");
+  const serversPanelEmpty = $("serversPanelEmpty");
+  const serversPanelInner = $("serversPanelInner");
+  const srvDot           = $("srvDot");
+  const srvPanelName     = $("srvPanelName");
+  const srvPanelCore     = $("srvPanelCore");
+  const srvPanelState    = $("srvPanelState");
+  const srvConsole       = $("srvConsole");
+  const srvCmdInput      = $("srvCmdInput");
+  const srvCmdSend       = $("srvCmdSend");
+  const srvBtnStart      = $("srvBtnStart");
+  const srvBtnStop       = $("srvBtnStop");
+  const srvBtnProps      = $("srvBtnProps");
+  const srvBtnFolder     = $("srvBtnFolder");
+  const srvBtnDelete     = $("srvBtnDelete");
+  const serverModal      = $("serverModal");
+  const srvNameIn        = $("serverName");
+  const srvCoreSel       = $("serverCore");
+  const srvVerSel        = $("serverVersion");
+  const srvLoaderField   = $("serverLoaderField");
+  const srvLoaderSel     = $("serverLoaderVersion");
+  const srvMemMin        = $("serverMemMin");
+  const srvMemMax        = $("serverMemMax");
+  const srvPortIn        = $("serverPort");
+  const srvEula          = $("serverEula");
+  const srvErrorEl       = $("serverError");
+  const srvProgWrap      = $("serverProgressWrap");
+  const srvBarEl         = $("serverProgressBar");
+  const srvTextEl        = $("serverProgressText");
+  const srvBtnCancel     = $("serverCancel");
+  const srvBtnCreate     = $("serverCreate");
+  const propsModal       = $("propsModal");
+  const propsServerName  = $("propsServerName");
+  const propsList        = $("propsList");
+  const propsMemMin      = $("propsMemMin");
+  const propsMemMax      = $("propsMemMax");
+  const propsErrorEl     = $("propsError");
+  const propsCancel      = $("propsCancel");
+  const propsSave        = $("propsSave");
+
+  const state = {
+    builds: [],
+    accounts: [],
+    versions: null,
+    selected: null,
+    account: null,
+    installing: null,
+    launchBuild: null,
+    game: "idle",
+    settings: null,
+    javaMajors: [8, 11, 17, 21, 25],
+    buildInfo: [],
+    settingsTab: "java",
+    loaderVersions: [],
+    modsTab: "mods",
+    editBuild: null,
+    serverCores: [],
+    servers: [],
+    serverSel: null,
+    serverRunning: null,
+    serverBuffers: {},
+    creatingServer: null,
+    propsServer: null,
+    exportBuild: null,
+    exportMode: "gz",
+    importText: null,
+    importInfo: null,
+    importing: null
+  };
+  let animateList = true;   // каскадная анимация элементов списка
+
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  // ---------- переключение экранов ----------
+  function animateIn(el, cls) {
+    el.classList.remove(cls);
+    void el.offsetWidth;           // перезапуск анимации
+    el.classList.add(cls);
+  }
+
+  function selectedBuildObj() {
+    return state.builds.find((b) => b.name === state.selected) || null;
+  }
+  function modsAllowed() {
+    const b = selectedBuildObj();
+    return !!b && (b.loader || "vanilla") !== "vanilla";
+  }
+  function refreshModsButton() {
+    btnMods.hidden = !modsAllowed();
+    if (btnMods.hidden) btnMods.classList.remove("active");
+  }
+
+  function showView(v) {
+    const views = { library: buildsView, accounts: accountsView, skins: skinsView, settings: settingsView, mods: modsView, servers: serversView };
+    if (v === "mods" && !modsAllowed()) v = "library";
+    for (const key of Object.keys(views)) {
+      views[key].hidden = (key !== v);
+    }
+    btnHome.classList.toggle("active", v === "home");
+    btnLib.classList.toggle("active", v === "library");
+    btnAcc.classList.toggle("active", v === "accounts");
+    btnSkins.classList.toggle("active", v === "skins");
+    btnMods.classList.toggle("active", v === "mods");
+    btnSettings.classList.toggle("active", v === "settings");
+    btnServers.classList.toggle("active", v === "servers");
+
+    if (v === "library") {
+      animateList = true;
+      refreshBuilds();
+      animateIn(buildsView, "view-anim");
+    }
+    if (v === "accounts") {
+      animateList = true;
+      refreshAccounts();
+      animateIn(accountsView, "view-anim");
+    }
+    if (v === "skins") {
+      animateList = true;
+      refreshSkins();
+      animateIn(skinsView, "view-anim");
+    }
+    if (v === "settings") {
+      refreshSettings();
+      animateIn(settingsView, "view-anim");
+    }
+    if (v === "mods") {
+      refreshMods();
+      animateIn(modsView, "view-anim");
+    }
+    if (v === "servers") {
+      animateList = true;
+      refreshServers();
+      animateIn(serversView, "view-anim");
+    }
+  }
+  btnHome.addEventListener("click", () => showView("home"));
+  btnLib.addEventListener("click", () => showView("library"));
+  btnAcc.addEventListener("click", () => showView("accounts"));
+  btnSkins.addEventListener("click", () => showView("skins"));
+  btnMods.addEventListener("click", () => showView("mods"));
+  btnSettings.addEventListener("click", () => showView("settings"));
+  btnServers.addEventListener("click", () => showView("servers"));
+
+  // ---------- список сборок ----------
+  async function refreshBuilds() {
+    const res = await window.api.listBuilds();
+    if (!res.ok) return;
+    state.builds = res.builds;
+    // выбранной сборки больше нет (удалили/переименовали)
+    if (state.selected && !state.builds.some((b) => b.name === state.selected)) {
+      state.selected = null;
+      instanceValue.textContent = "—";
+    }
+    // авто-выбор первой готовой сборки
+    if (!state.selected) {
+      const first = state.builds.find((b) => b.status === "ready");
+      if (first) selectBuild(first, false);
+    }
+    refreshModsButton();
+    render();
+  }
+
+  function statusOf(b) {
+    if (b.status === "ready") {
+      const d = b.created ? new Date(b.created) : null;
+      return { cls: "ready", text: "Готово" + (d ? " · " + d.toLocaleDateString("ru-RU") : "") };
+    }
+    if (b.status === "queued") return { cls: "downloading", text: "В очереди…" };
+    if (b.status === "error")   return { cls: "error", text: b.text || "не удалось скачать" };
+    return { cls: "downloading", text: (b.text || "Скачивается…") + " · " + (b.percent || 0) + "%" };
+  }
+
+  // ---- группировка сборок (выбор в шапке, помнится между запусками) ----
+  const buildsGroupSel = $("buildsGroup");
+  buildsGroupSel.value = localStorage.getItem("cmcl.buildsGroup") || "none";
+  buildsGroupSel.addEventListener("change", () => {
+    localStorage.setItem("cmcl.buildsGroup", buildsGroupSel.value);
+    animateList = true;
+    render();
+  });
+
+  function verSortKey(v) {
+    return String(v || "?").split(".").map((x) => {
+      const n = parseInt(x, 10);
+      return Number.isFinite(n) ? n : -1;
+    });
+  }
+
+  function groupBuilds(list) {
+    const mode = buildsGroupSel.value;
+    if (mode === "none") return [{ label: null, items: list }];
+    const keyOf = (b) => {
+      if (mode === "version") return b.version || "?";
+      if (mode === "loader") return loaderLabel(b.loader || "vanilla");
+      if (b.status === "ready") return "Готово";
+      if (b.status === "error") return "Ошибка";
+      return "Загрузка";
+    };
+    const map = new Map();
+    for (const b of list) {
+      const k = keyOf(b);
+      if (!map.has(k)) map.set(k, []);
+      map.get(k).push(b);
+    }
+    const keys = [...map.keys()];
+    if (mode === "version") {
+      keys.sort((a, b) => {
+        const pa = verSortKey(a), pb = verSortKey(b);
+        for (let j = 0; j < 3; j++) {
+          if ((pa[j] || 0) !== (pb[j] || 0)) return (pb[j] || 0) - (pa[j] || 0);
+        }
+        return String(a).localeCompare(String(b));
+      });
+    } else if (mode === "status") {
+      const order = ["Готово", "Загрузка", "Ошибка"];
+      keys.sort((a, b) => order.indexOf(a) - order.indexOf(b));
+    } else {
+      keys.sort((a, b) => String(a).localeCompare(String(b), "ru"));
+    }
+    return keys.map((k) => ({ label: k, items: map.get(k) }));
+  }
+
+  function render() {
+    countEl.textContent = String(state.builds.length);
+    listEl.innerHTML = "";
+
+    if (!state.builds.length) {
+      listEl.innerHTML =
+        '<div class="empty">Пока нет сборок.<br>Нажмите «Добавить сборку» — поддерживаются любые версии Vanilla.</div>';
+      return;
+    }
+
+    let i = 0;
+    for (const g of groupBuilds(state.builds)) {
+      if (g.label) {
+        const head = document.createElement("div");
+        head.className = "group-head";
+        head.innerHTML = '<span class="gh-label">' + esc(g.label) + "</span>" +
+          '<span class="gh-count">' + g.items.length + "</span>";
+        listEl.appendChild(head);
+      }
+      for (const b of g.items) {
+        renderBuildItem(b, i);
+        i++;
+      }
+    }
+    animateList = false;
+  }
+
+  function renderBuildItem(b, i) {
+    const st = statusOf(b);
+    const downloading = b.status === "downloading" || b.status === "queued";
+    const ready = b.status === "ready";
+    const retryable = b.status === "error";
+
+    const item = document.createElement("div");
+    item.className = "build-item" + (state.selected === b.name ? " selected" : "");
+    if (animateList) {
+      item.classList.add("anim");
+      item.style.animationDelay = (i * 35) + "ms";
+    }
+    item.innerHTML =
+      '<div class="bi-badge">' + esc((b.name[0] || "?").toUpperCase()) + "</div>" +
+      '<div class="bi-main">' +
+        '<div class="bi-name"><span class="txt">' + esc(b.name) + "</span>" +
+          '<span class="bi-ver">' + esc(b.version || "?") + "</span>" +
+          (b.loader && b.loader !== "vanilla"
+            ? '<span class="bi-loader">' + esc(loaderLabel(b.loader)) + "</span>" : "") +
+        "</div>" +
+        '<div class="bi-meta"><span class="bi-status ' + st.cls + '">' + esc(st.text) + "</span></div>" +
+        (downloading
+          ? '<div class="mini-progress"><div style="width:' + (b.percent || 0) + '%"></div></div>'
+          : "") +
+      "</div>" +
+      '<div class="bi-actions">' +
+        (ready ? '<button class="bi-btn bi-play" title="Запустить">▶</button>' : "") +
+        (ready ? '<button class="bi-btn bi-java" title="Проверить / скачать Java">Java</button>' : "") +
+        (ready ? '<button class="bi-btn bi-edit" title="Редактировать">✎</button>' : "") +
+        (ready ? '<button class="bi-btn bi-export" title="Экспорт в .ccli">⇩ .ccli</button>' : "") +
+        (retryable ? '<button class="bi-btn bi-retry" title="Продолжить загрузку">Повторить</button>' : "") +
+        '<button class="bi-del" title="' + (downloading ? "Отменить и удалить" : "Удалить") + '">×</button>' +
+      "</div>";
+
+    item.addEventListener("click", (ev) => {
+      if (ev.target.closest(".bi-actions")) return;
+      if (b.status !== "ready") return;
+      selectBuild(b, true);
+    });
+    item.querySelector(".bi-del").addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      removeBuild(b.name);
+    });
+    const playBtn = item.querySelector(".bi-play");
+    if (playBtn) playBtn.addEventListener("click", (ev) => { ev.stopPropagation(); launch(b.name); });
+    const javaBtn = item.querySelector(".bi-java");
+    if (javaBtn) javaBtn.addEventListener("click", (ev) => { ev.stopPropagation(); checkJava(b.name); });
+    const editBtn = item.querySelector(".bi-edit");
+    if (editBtn) editBtn.addEventListener("click", (ev) => { ev.stopPropagation(); openEditModal(b.name); });
+    const exportBtn = item.querySelector(".bi-export");
+    if (exportBtn) exportBtn.addEventListener("click", (ev) => { ev.stopPropagation(); openExportModal(b.name); });
+    const retryBtn = item.querySelector(".bi-retry");
+    if (retryBtn) retryBtn.addEventListener("click", (ev) => { ev.stopPropagation(); retryBuild(b); });
+
+    listEl.appendChild(item);
+  }
+
+  async function retryBuild(b) {
+    toast("Продолжаем загрузку «" + b.name + "»…");
+    const res = await window.api.addBuild({
+      name: b.name, version: b.version,
+      loader: b.loader || "vanilla", loaderVersion: b.loaderVersion || ""
+    });
+    if (!res.ok) { toast(res.error, "error"); }
+    animateList = false;
+    await refreshBuilds();
+  }
+
+  function selectBuild(b, rerender) {
+    state.selected = b.name;
+    const ldr = loaderLabel(b.loader);
+    instanceValue.innerHTML =
+      esc(b.name) + ' <span class="dim">· ' + esc(b.version) + " · " + esc(ldr) + "</span>";
+    refreshModsButton();
+    if (rerender) render();
+  }
+
+  function loaderLabel(loader) {
+    if (loader === "fabric") return "Fabric";
+    if (loader === "quilt") return "Quilt";
+    if (loader === "forge") return "Forge";
+    if (loader === "neoforge") return "NeoForge";
+    return "Vanilla";
+  }
+
+  async function removeBuild(name) {
+    const b = state.builds.find((x) => x.name === name);
+    const busy = b && (b.status === "downloading" || b.status === "queued");
+    const msg = busy
+      ? 'Отменить загрузку и удалить сборку «' + name + '»?\nПапка ver/' + name + ' будет удалена.'
+      : 'Удалить сборку «' + name + '»?\nПапка ver/' + name + ' будет удалена.';
+    if (!confirmDelete(msg)) return;
+
+    const res = await window.api.deleteBuild(name);
+    if (!res.ok) { toast(res.error, "error"); return; }
+    if (state.selected === name) {
+      state.selected = null;
+      instanceValue.textContent = "—";
+    }
+    animateList = true;
+    await refreshBuilds();
+  }
+
+  // ---------- прогресс скачивания ----------
+  window.api.onProgress((p) => {
+    if (p.status === "deleted") {
+      state.builds = state.builds.filter((x) => x.name !== p.build);
+      if (state.selected === p.build) {
+        state.selected = null;
+        instanceValue.textContent = "—";
+      }
+      if (!buildsView.hidden) render();
+      return;
+    }
+
+    const b = state.builds.find((x) => x.name === p.build);
+    if (b) {
+      b.status = p.status;
+      b.percent = p.percent;
+      b.text = p.text;
+      if (!buildsView.hidden) render();
+    } else {
+      refreshBuilds();
+    }
+
+    if (state.installing === p.build) {
+      barEl.style.width = (p.percent || 0) + "%";
+      textEl.textContent = p.text || "";
+    }
+
+    if (p.status === "ready") toast("Сборка «" + p.build + "» готова", "ok");
+    if (p.status === "error") toast("Ошибка загрузки «" + p.build + "»: " + p.text, "error");
+  });
+
+  // ---------- модальное окно ----------
+  function showError(msg) {
+    errEl.textContent = msg;
+    errEl.hidden = false;
+  }
+  function hideError() { errEl.hidden = true; }
+
+  function openModal() {
+    modal.hidden = false;
+    animateIn(modal, "overlay-anim");
+    animateIn(modal.querySelector(".modal"), "modal-anim");
+    hideError();
+    progWrap.hidden = true;
+    barEl.style.width = "0%";
+    nameIn.value = "";
+    nameIn.disabled = false;
+    verSel.disabled = false;
+    loaderSel.disabled = false;
+    loaderVerField.hidden = true;
+    loaderVerSel.innerHTML = "";
+    verFilterIn.value = "";
+    btnCancel.hidden = false;
+    btnStart.disabled = false;
+    btnStart.textContent = "Скачать";
+
+    // вспоминаем прошлый выбор (загрузчик + фильтр версии)
+    const last = readLastChoice();
+    loaderSel.value = last.loader || "vanilla";
+    setLoaderQuick(loaderSel.value);
+
+    ensureVersions()
+      .then(() => {
+        if (last.version && state.versions.some((v) => v.id === last.version)) {
+          verFilterIn.value = "";
+          verSel.value = last.version;
+        }
+        applyVersionFilter();
+        nameEdited = false;
+        refreshLoaderVersions();
+        maybeAutoName();
+      })
+      .catch((e) => showError(e.message));
+    setTimeout(() => nameIn.focus(), 50);
+  }
+
+  function closeModal() {
+    modal.classList.add("fade-out");
+    setTimeout(() => {
+      modal.hidden = true;
+      modal.classList.remove("fade-out");
+    }, 140);
+  }
+
+  // ---------- быстрые пресеты загрузчика ----------
+  function setLoaderQuick(loader) {
+    for (const b of loaderQuick.querySelectorAll(".lq")) {
+      b.classList.toggle("active", b.dataset.loader === loader);
+    }
+  }
+  loaderQuick.addEventListener("click", (e) => {
+    const b = e.target.closest(".lq");
+    if (!b || state.installing) return;
+    loaderSel.value = b.dataset.loader;
+    setLoaderQuick(loaderSel.value);
+    refreshLoaderVersions();
+    maybeAutoName();
+  });
+
+  // ---------- фильтр длинного списка версий ----------
+  function applyVersionFilter() {
+    const q = verFilterIn.value.trim().toLowerCase();
+    let shown = 0;
+    for (const g of verSel.querySelectorAll("optgroup")) {
+      let any = false;
+      for (const o of g.querySelectorAll("option")) {
+        const match = !q || o.value.toLowerCase().includes(q);
+        o.hidden = !match;
+        if (match) { any = true; shown++; }
+      }
+      g.hidden = !any;
+    }
+    if (q && shown && !verSel.selectedOptions.length) {
+      const first = verSel.querySelector("optgroup:not([hidden]) option:not([hidden])");
+      if (first) verSel.value = first.value;
+    }
+  }
+  verFilterIn.addEventListener("input", () => { applyVersionFilter(); refreshLoaderVersions(); });
+
+  // ---------- автоимя + запоминание выбора ----------
+  let nameEdited = false;
+  nameIn.addEventListener("input", () => { nameEdited = nameIn.value.trim().length > 0; });
+
+  function suggestedName() {
+    const ldr = loaderLabel(loaderSel.value);
+    const ver = verSel.value;
+    if (!ver) return "";
+    return loaderSel.value === "vanilla" ? ("Выживание " + ver) : (ldr + " " + ver);
+  }
+  function maybeAutoName() {
+    if (nameEdited || state.installing) return;
+    const s = suggestedName();
+    if (s) nameIn.placeholder = "Например: " + s;
+  }
+
+  function readLastChoice() {
+    try { return JSON.parse(localStorage.getItem("cmcl.lastBuild") || "{}"); } catch (_) { return {}; }
+  }
+  function writeLastChoice() {
+    try {
+      localStorage.setItem("cmcl.lastBuild", JSON.stringify({
+        loader: loaderSel.value,
+        version: verSel.value,
+        name: nameIn.value.trim()
+      }));
+    } catch (_) {}
+  }
+
+  btnAdd.addEventListener("click", openModal);
+  btnCancel.addEventListener("click", () => { if (!state.installing) closeModal(); });
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal && !state.installing) closeModal();
+  });
+
+  async function ensureVersions() {
+    if (state.versions) return;
+    verSel.innerHTML = '<option value="">Загрузка версий…</option>';
+    verSel.disabled = true;
+    const res = await window.api.getVersions();
+    verSel.disabled = false;
+    if (!res.ok) throw new Error(res.error || "Не удалось загрузить список версий");
+
+    state.versions = res.versions;
+    const rel = [], snap = [], old = [];
+    for (const v of res.versions) {
+      if (v.type === "release") rel.push(v);
+      else if (v.type === "snapshot") snap.push(v);
+      else old.push(v);
+    }
+
+    verSel.innerHTML = "";
+    const addGroup = (title, arr) => {
+      if (!arr.length) return;
+      const g = document.createElement("optgroup");
+      g.label = title;
+      for (const v of arr) {
+        const o = document.createElement("option");
+        o.value = v.id;
+        o.textContent = v.id + (v.type === "snapshot" ? " (снапшот)" : "");
+        g.appendChild(o);
+      }
+      verSel.appendChild(g);
+    };
+    addGroup("Релизы", rel);
+    addGroup("Снапшоты", snap);
+    addGroup("Старые версии (beta/alpha)", old);
+    if (rel.length) verSel.value = rel[0].id;
+  }
+
+  /** Подгружает список версий выбранного загрузчика (Fabric/Forge/NeoForge) */
+  async function refreshLoaderVersions() {
+    const loader = loaderSel.value;
+    maybeAutoName();
+    if (loader === "vanilla") {
+      loaderVerField.hidden = true;
+      loaderVerSel.innerHTML = "";
+      return;
+    }
+    const version = verSel.value;
+    loaderVerField.hidden = false;
+    loaderVerSel.disabled = true;
+    loaderVerSel.innerHTML = '<option value="">Загрузка…</option>';
+    if (!version) { loaderVerSel.disabled = false; return; }
+    try {
+      const res = await window.api.loaderVersions({ loader, version });
+      if (!res.ok) {
+        loaderVerSel.innerHTML = '<option value="">' + esc(res.error || "Ошибка") + "</option>";
+      } else {
+        state.loaderVersions = res.versions || [];
+        loaderVerSel.innerHTML = "";
+        if (!state.loaderVersions.length) {
+          loaderVerSel.innerHTML = '<option value="">Нет версий для этой игры</option>';
+        } else {
+          for (const v of state.loaderVersions) {
+            const o = document.createElement("option");
+            o.value = v;
+            o.textContent = v;
+            loaderVerSel.appendChild(o);
+          }
+        }
+      }
+    } catch (e) {
+      loaderVerSel.innerHTML = '<option value="">' + esc(e.message) + "</option>";
+    }
+    loaderVerSel.disabled = false;
+  }
+
+  loaderSel.addEventListener("change", () => {
+    setLoaderQuick(loaderSel.value);
+    refreshLoaderVersions();
+  });
+  verSel.addEventListener("change", () => { refreshLoaderVersions(); });
+
+  btnStart.addEventListener("click", async () => {
+    // во время скачивания кнопка превращается в «Свернуть»
+    if (state.installing) { closeModal(); return; }
+
+    const name = nameIn.value.trim() || suggestedName();
+    const version = verSel.value;
+    const loader = loaderSel.value;
+    const loaderVersion = loader === "vanilla" ? "" : loaderVerSel.value;
+    hideError();
+    if (!name) { showError("Введите название сборки"); return; }
+    if (!version) { showError("Выберите версию Minecraft"); return; }
+    if (loader !== "vanilla" && !loaderVersion) {
+      showError("Выберите версию загрузчика " + loaderLabel(loader));
+      return;
+    }
+
+    nameIn.value = name;
+    nameIn.disabled = true;
+    verSel.disabled = true;
+    verFilterIn.disabled = true;
+    loaderSel.disabled = true;
+    loaderVerSel.disabled = true;
+    for (const b of loaderQuick.querySelectorAll(".lq")) b.disabled = true;
+    btnCancel.hidden = true;
+    btnStart.disabled = false;
+    btnStart.textContent = "Свернуть";
+    progWrap.hidden = false;
+    barEl.style.width = "0%";
+    textEl.textContent = "Подготовка…";
+    state.installing = name;
+    writeLastChoice();
+
+    const res = await window.api.addBuild({ name, version, loader, loaderVersion });
+    state.installing = null;
+    closeModal();
+    animateList = true;
+    await refreshBuilds();
+
+    if (!res.ok) {
+      // вернуть окно с ошибкой
+      modal.hidden = false;
+      nameIn.value = name;
+      nameIn.disabled = false;
+      verSel.disabled = false;
+      verFilterIn.disabled = false;
+      loaderSel.disabled = false;
+      loaderVerSel.disabled = false;
+      for (const b of loaderQuick.querySelectorAll(".lq")) b.disabled = false;
+      btnCancel.hidden = false;
+      btnStart.disabled = false;
+      btnStart.textContent = "Скачать";
+      showError(res.error || "Неизвестная ошибка");
+    }
+  });
+
+  // ============================================================
+  // АККАУНТЫ
+  // ============================================================
+  const acctTypeLabel = (t) => (t === "elyby" ? "ely.by" : "offline");
+
+  async function refreshAccounts() {
+    const res = await window.api.listAccounts();
+    if (!res.ok) return;
+    state.accounts = res.accounts;
+    const sel = state.accounts.find((a) => a.selected);
+    state.account = sel ? sel.name : null;
+    accountValue.innerHTML = sel
+      ? esc(sel.name) + ' <span class="dim">· ' + acctTypeLabel(sel.type) +
+        (sel.type === "elyby" && !sel.authed ? " (не вошёл)" : "") + "</span>"
+      : "—";
+    renderAccounts();
+  }
+
+  function renderAccounts() {
+    accountsCount.textContent = String(state.accounts.length);
+    accountsList.innerHTML = "";
+
+    if (!state.accounts.length) {
+      accountsList.innerHTML =
+        '<div class="empty">Аккаунтов пока нет.<br>Введите ник справа и нажмите «Добавить».<br>' +
+        '<span class="dim">Offline-аккаунт работает без пароля — для одиночной игры ' +
+        'и серверов с offlinemode. Аккаунт ELY.by: введите пароль — лаунчер реально ' +
+        'войдёт на ely.by (нужен для online-mode серверов); скин в игре отображается ' +
+        'в любом случае, даже при добавлении только по нику.</span></div>';
+      return;
+    }
+
+    state.accounts.forEach((a, i) => {
+      const item = document.createElement("div");
+      item.className = "build-item" + (a.selected ? " selected" : "");
+      if (animateList) {
+        item.classList.add("anim");
+        item.style.animationDelay = (i * 35) + "ms";
+      }
+      const isEly = a.type === "elyby";
+      item.innerHTML =
+        '<div class="bi-badge acct">' + esc((a.name[0] || "?").toUpperCase()) + "</div>" +
+        '<div class="bi-main">' +
+          '<div class="bi-name"><span class="txt">' + esc(a.name) + "</span>" +
+            '<span class="bi-ver">' + acctTypeLabel(a.type) + "</span>" +
+            (a.selected ? '<span class="bi-check">активный</span>' : "") + "</div>" +
+          '<div class="bi-meta">UUID: ' + esc(a.uuid || "—") +
+            (isEly ? " · " + (a.authed ? "вход: по токену" : "вход не выполнен") : "") + "</div>" +
+        "</div>" +
+        '<div class="bi-actions">' +
+          (isEly ? '<button class="bi-btn" data-act="login">' + (a.authed ? "Перевойти" : "Войти") + "</button>" : "") +
+          (a.selected ? "" : '<button class="bi-btn" data-act="select">Выбрать</button>') +
+          '<button class="bi-del" title="Удалить">×</button>' +
+        "</div>";
+
+      const pick = async () => {
+        const r = await window.api.selectAccount(a.name);
+        if (!r.ok) { toast(r.error, "error"); return; }
+        animateList = false;
+        await refreshAccounts();
+        toast("Аккаунт «" + a.name + "» активен", "ok");
+      };
+
+      item.addEventListener("click", (ev) => {
+        if (ev.target.closest(".bi-actions")) return;
+        pick();
+      });
+      const selBtn = item.querySelector('[data-act="select"]');
+      if (selBtn) selBtn.addEventListener("click", (ev) => { ev.stopPropagation(); pick(); });
+      const loginBtn = item.querySelector('[data-act="login"]');
+      if (loginBtn) loginBtn.addEventListener("click", async (ev) => {
+        ev.stopPropagation();
+        await elybyLoginFlow(a.name);
+      });
+      item.querySelector(".bi-del").addEventListener("click", async (ev) => {
+        ev.stopPropagation();
+        if (!confirmDelete("Удалить аккаунт «" + a.name + "»?")) return;
+        const r = await window.api.deleteAccount(a.name);
+        if (!r.ok) { toast(r.error, "error"); return; }
+        animateList = true;
+        await refreshAccounts();
+      });
+
+      accountsList.appendChild(item);
+    });
+    animateList = false;
+  }
+
+  // Вход в ELY.by для уже добавленного аккаунта: пароль + при необходимости код 2FA.
+  // password уже может содержать "пароль:код" — тогда код повторно не спрашиваем.
+  async function elybyLoginFlow(name, password) {
+    let pass = password;
+    if (pass === undefined) {
+      pass = prompt("Пароль от аккаунта ELY.by «" + name + "»:");
+      if (pass === null || !pass.trim()) return null;
+      pass = pass.trim();
+    }
+    let r = await window.api.elybyLogin(name, pass);
+    if (!r.ok && r.needOtp && pass.indexOf(":") === -1) {
+      const otp = prompt("Аккаунт защищён 2FA. Введите код из приложения ELY.by:");
+      if (otp === null) { toast(r.error, "error"); return null; }
+      r = await window.api.elybyLogin(name, pass + ":" + otp.trim());
+    }
+    if (!r.ok) { toast(r.error, "error"); return null; }
+    return r;
+  }
+
+  async function addAccount() {
+    const type = accountTypeSel.value === "elyby" ? "elyby" : "offline";
+    const name = accountNameIn.value.trim();
+    let password = type === "elyby" ? accountPassIn.value : "";
+    let res = await window.api.addAccount({ name, type, password });
+    if (!res.ok && res.needOtp && password.indexOf(":") === -1) {
+      const otp = prompt("Аккаунт защищён 2FA. Введите код из приложения ELY.by:");
+      if (otp === null) { toast(res.error, "error"); return; }
+      password = password + ":" + otp.trim();
+      res = await window.api.addAccount({ name, type, password });
+    }
+    if (!res.ok) { toast(res.error, "error"); return; }
+    accountNameIn.value = "";
+    accountPassIn.value = "";
+    animateList = true;
+    await refreshAccounts();
+    toast(type === "elyby" && password ? "Вход в ELY.by выполнен" : "Аккаунт добавлен", "ok");
+  }
+
+  // поле пароля — только для ELY.by
+  accountTypeSel.addEventListener("change", () => {
+    const ely = accountTypeSel.value === "elyby";
+    accountPassIn.hidden = !ely;
+    accountPassIn.placeholder = ely ? "Пароль ELY.by (пусто — только ник)" : "";
+    if (ely) accountNameIn.focus();
+  });
+
+  btnAddAccount.addEventListener("click", addAccount);
+  accountNameIn.addEventListener("keydown", (e) => { if (e.key === "Enter") addAccount(); });
+  accountPassIn.addEventListener("keydown", (e) => { if (e.key === "Enter") addAccount(); });
+
+  // ============================================================
+  // СКИНЫ — вкладка «Скины» (3D-превью в карточках)
+  // ============================================================
+  const skinsList      = $("skinsList");
+  const skinsCount     = $("skinsCount");
+  const skinNickIn     = $("skinNick");
+  const btnSkinFetch   = $("btnSkinFetch");
+  const btnSkinRefresh = $("btnSkinRefreshAll");
+  const btnSkinAdd     = $("btnSkinAdd");
+  const btnSkinFolder  = $("btnSkinFolder");
+  const skinsHint      = $("skinsHint");
+
+  let cardViewers = [];     // просмотрщики карточек (пересоздаются при рендере)
+
+  const modelOpt = (m) => (m === "slim" ? "slim" : "default");
+
+  async function refreshSkins() {
+    const res = await window.api.skinsList();
+    if (!res.ok) { toast(res.error, "error"); return; }
+    // показываем реальные папки, откуда читаются скины
+    if (res.dirs && res.dirs.length) {
+      skinsHint.textContent = "Папки со скинами: " + res.dirs.join("  ·  ") +
+        " — PNG, положенные туда, появятся здесь. Скин выбирается одним кликом и привязывается к активному аккаунту," +
+        " а для ELY.by он также отображается прямо в игре (authlib-injector подключается при запуске автоматически).";
+    }
+    renderSkinCards(res);
+  }
+
+  function renderSkinCards(res) {
+    for (const cv of cardViewers) { try { cv.dispose(); } catch (_) {} }
+    cardViewers = [];
+    skinsList.innerHTML = "";
+
+    const activeAcc = res.accounts.find((a) => a.selected) || res.accounts[0];
+    const activeFile = activeAcc && activeAcc.skin ? activeAcc.skin.file : null;
+
+    const cards = res.files.slice();
+    for (const a of res.accounts) {
+      if (a.skin && a.skin.file && !cards.some((c) => c.file === a.skin.file)) {
+        cards.push({ file: a.skin.file, model: a.skin.model, capeFile: a.skin.capeFile, owner: a.name });
+      }
+    }
+    skinsCount.textContent = String(cards.length);
+
+    if (!cards.length) {
+      skinsList.innerHTML =
+        '<div class="empty">Скинов пока нет.<br>' +
+        '<span class="dim">Войдите в аккаунт ELY.by (вкладка «Аккаунты») — скин подтянется сам. ' +
+        'Или укажите ник ely.by сверху и нажмите «Взять скин».</span></div>';
+      return;
+    }
+
+    cards.forEach((c, i) => {
+      const card = document.createElement("div");
+      card.className = "skin-card" + (c.file === activeFile ? " active" : "");
+      if (animateList) {
+        card.classList.add("anim");
+        card.style.animationDelay = (i * 45) + "ms";
+      }
+      card.title = "Клик — выбрать скин для активного аккаунта";
+      card.innerHTML =
+        '<canvas class="skin-card-canvas" width="150" height="210"></canvas>' +
+        '<div class="skin-card-name">' + esc(c.owner || c.file.replace(/\.png$/i, "")) + "</div>" +
+        '<div class="skin-card-meta">' + (c.model === "slim" ? "slim (Alex)" : "wide (Steve)") +
+          " · " + (c.owner ? "ely.by" : "локальный") + "</div>" +
+        '<button class="btn-neon small skin-card-btn">' + (c.file === activeFile ? "✓ Активен" : "Выбрать") + "</button>";
+      skinsList.appendChild(card);
+
+      // 3D-превью карточки (своё вращение)
+      const cv = card.querySelector(".skin-card-canvas");
+      window.api.skinsData(c.file).then((d) => {
+        if (!d.ok || !window.skinview3d) return;
+        let sv;
+        try {
+          sv = new skinview3d.SkinViewer({ canvas: cv, width: 150, height: 210, zoom: 0.8 });
+        } catch (_) { return; }
+        sv.autoRotate = true;
+        sv.autoRotateSpeed = 1.4;
+        cardViewers.push(sv);
+        sv.loadSkin(d.dataUrl).then(() => { sv.playerObject.skin.modelType = modelOpt(c.model); }).catch(() => {});
+      });
+
+      // 1 клик — выбрать
+      const pick = async () => {
+        if (c.file === activeFile) return;
+        const r = await window.api.skinsSelect({ file: c.file, model: c.model, capeFile: c.capeFile });
+        if (!r.ok) { toast(r.error, "error"); return; }
+        toast("Скин применён к «" + r.account + "»", "ok");
+        animateList = false;
+        await refreshSkins();
+      };
+      card.addEventListener("click", (ev) => {
+        const btn = ev.target.closest("button");
+        if (btn && !btn.classList.contains("skin-card-btn")) return;
+        pick();
+      });
+    });
+    animateList = false;
+  }
+
+  btnSkinFetch.addEventListener("click", async () => {
+    const nick = skinNickIn.value.trim();
+    if (!nick) { toast("Введите ник ely.by", "error"); return; }
+    toast("Забираю скин «" + nick + "» с ely.by…");
+    const r = await window.api.skinsFetchEly(nick);
+    if (!r.ok) { toast(r.error, "error"); return; }
+    toast(r.account
+      ? "Скин «" + nick + "» привязан к аккаунту «" + r.account + "»"
+      : "Скин «" + nick + "» скачан", "ok");
+    skinNickIn.value = "";
+    animateList = true;
+    refreshSkins();
+  });
+  skinNickIn.addEventListener("keydown", (e) => { if (e.key === "Enter") btnSkinFetch.click(); });
+
+  btnSkinRefresh.addEventListener("click", async () => {
+    toast("Обновляю скины с ely.by…");
+    const r = await window.api.skinsRefreshAll();
+    if (!r.ok) { toast(r.error, "error"); return; }
+    toast(r.total ? ("Обновлено скинов: " + r.updated + " из " + r.total) : "ELY.by-аккаунтов нет", r.total ? "ok" : undefined);
+    animateList = true;
+    refreshSkins();
+  });
+
+  // добавить PNG-файлы скинов из любой папки
+  btnSkinAdd.addEventListener("click", async () => {
+    const r = await window.api.skinsAddFiles();
+    if (!r || !r.ok) { toast((r && r.error) || "Не удалось добавить файлы", "error"); return; }
+    if (r.added) { toast("Добавлено скинов: " + r.added, "ok"); animateList = true; refreshSkins(); }
+  });
+
+  // открыть папку скинов лаунчера
+  btnSkinFolder.addEventListener("click", async () => {
+    const r = await window.api.skinsOpenFolder();
+    if (!r || !r.ok) toast((r && r.error) || "Не удалось открыть папку", "error");
+  });
+
+  // ============================================================
+  // КОНСОЛЬ
+  // ============================================================
+  const MAX_LOG = 500;
+
+  function openConsole(title, force) {
+    if (force || autoOpenConsole()) {
+      if (consoleEl.hidden) {
+        consoleEl.hidden = false;
+        animateIn(consoleEl, "console-anim");
+      }
+    }
+    if (title) consoleTitle.textContent = "Консоль · " + title;
+  }
+
+  function refreshConsoleToggle() {
+    btnToggleConsole.hidden = consoleLog.childElementCount === 0;
+  }
+
+  btnCloseConsole.addEventListener("click", () => { consoleEl.hidden = true; refreshConsoleToggle(); });
+  btnToggleConsole.addEventListener("click", () => {
+    if (consoleEl.hidden) openConsole(null, true);
+    else consoleEl.hidden = true;
+    refreshConsoleToggle();
+  });
+
+  function appendLog(line) {
+    if (!line) return;
+    if (consoleLog.childElementCount > MAX_LOG) {
+      while (consoleLog.childElementCount > MAX_LOG - 60) {
+        consoleLog.removeChild(consoleLog.firstChild);
+      }
+    }
+    const div = document.createElement("div");
+    div.className = "log-line";
+    const s = String(line);
+    if (/(ERROR|SEVERE|Exception|FAILED|Caused by)/i.test(s)) div.classList.add("log-err");
+    else if (/(WARN|WARNING)/i.test(s)) div.classList.add("log-warn");
+    div.textContent = s;
+    consoleLog.appendChild(div);
+    if (autoScrollConsole()) consoleLog.scrollTop = consoleLog.scrollHeight;
+    refreshConsoleToggle();
+  }
+
+  function setConsoleState(cls, text) {
+    consoleDot.className = "console-dot " + cls;
+    if (text) consoleState.textContent = text;
+  }
+
+  function setLaunchProgress(text, percent) {
+    if (percent === undefined || percent === null) {
+      consoleProg.hidden = true;
+      return;
+    }
+    consoleProg.hidden = false;
+    consoleBar.style.width = Math.max(0, Math.min(100, percent)) + "%";
+    if (text) setConsoleState("preparing", text);
+  }
+
+  // ---------- тосты ----------
+  let toastTimer = null;
+  function toast(msg, kind) {
+    toastEl.hidden = false;
+    toastEl.className = "toast show" + (kind ? " " + kind : "");
+    toastEl.textContent = msg;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      toastEl.classList.remove("show");
+      setTimeout(() => { toastEl.hidden = true; }, 260);
+    }, 3400);
+  }
+
+  // ============================================================
+  // ЗАПУСК / JAVA
+  // ============================================================
+  function setPlayState(busy) {
+    if (busy) {
+      btnPlay.classList.add("busy");
+      btnPlay.innerHTML = '<span class="stop-ico"></span>СТОП';
+    } else {
+      btnPlay.classList.remove("busy");
+      btnPlay.innerHTML = '<span class="tri"></span>PLAY';
+    }
+  }
+
+  async function launch(name) {
+    if (state.game === "running" || state.game === "preparing") {
+      toast("Игра уже запущена", "error");
+      return;
+    }
+    if (!state.account) {
+      toast("Сначала добавьте аккаунт во вкладке «Аккаунты»", "error");
+      showView("accounts");
+      return;
+    }
+
+    state.launchBuild = name;
+    openConsole(name);
+    consoleLog.innerHTML = "";
+    setConsoleState("preparing", "подготовка…");
+    setLaunchProgress("подготовка…", 0);
+    appendLog("Запуск сборки «" + name + "» под аккаунтом " + state.account + "…");
+
+    const res = await window.api.launchBuild(name);
+    if (!res.ok) {
+      toast(res.error, "error");
+      appendLog("Ошибка: " + res.error);
+      state.launchBuild = null;
+      setLaunchProgress(null);
+      setConsoleState("error", "ошибка");
+      setPlayState(false);
+    }
+  }
+
+  async function checkJava(name) {
+    state.launchBuild = name;
+    openConsole(name);
+    setConsoleState("preparing", "проверка Java…");
+    appendLog("Проверка Java для сборки «" + name + "»…");
+    const res = await window.api.ensureJava(name);
+    if (!res.ok) {
+      toast(res.error, "error");
+      appendLog("Ошибка: " + res.error);
+      setLaunchProgress(null);
+      setConsoleState("error", "ошибка");
+      return;
+    }
+    appendLog("Java " + res.major + ": " + res.java);
+    toast("Java " + res.major + " готова", "ok");
+    setLaunchProgress(null);
+    setConsoleState("idle", "готово");
+    state.launchBuild = null;
+  }
+
+  btnStopGame.addEventListener("click", async () => {
+    const res = await window.api.stopBuild();
+    if (!res.ok) toast(res.error, "error");
+  });
+
+  btnPlay.addEventListener("click", () => {
+    if (state.game === "running" || state.game === "preparing") {
+      window.api.stopBuild();
+      return;
+    }
+    if (!state.selected) {
+      toast("Выберите сборку во вкладке «Сборки»", "error");
+      showView("library");
+      return;
+    }
+    launch(state.selected);
+  });
+
+  // ---------- события из главного процесса ----------
+  window.api.onLaunchProgress((p) => {
+    if (state.launchBuild && p.build !== state.launchBuild) return;
+    if (p.percent >= 100) {
+      setLaunchProgress(p.text, 100);
+      setTimeout(() => setLaunchProgress(null), 500);
+    } else {
+      setLaunchProgress(p.text, p.percent);
+    }
+  });
+
+  window.api.onGameLog((p) => {
+    if (state.launchBuild && p.build !== state.launchBuild) return;
+    openConsole(p.build);
+    appendLog(p.line);
+  });
+
+  window.api.onGameState((p) => {
+    state.game = p.state;
+
+    if (p.state === "preparing") {
+      openConsole(p.build);
+      setConsoleState("preparing", "подготовка…");
+      setLaunchProgress("подготовка…", 0);
+      btnStopGame.hidden = false;
+      setPlayState(true);
+      return;
+    }
+
+    if (p.state === "running") {
+      setConsoleState("running", "игра запущена");
+      setLaunchProgress(null);
+      btnStopGame.hidden = false;
+      setPlayState(true);
+      toast("Игра запущена: " + p.build, "ok");
+      return;
+    }
+
+    // stopped / exited / error
+    btnStopGame.hidden = true;
+    setPlayState(false);
+    if (p.state === "error") {
+      setConsoleState("error", "ошибка");
+      appendLog("Ошибка: " + (p.message || "неизвестно"));
+      toast(p.message || "Не удалось запустить игру", "error");
+    } else {
+      setConsoleState("idle", "процесс завершён");
+      toast("Игра закрыта" + (p.code !== undefined ? " (код " + p.code + ")" : ""));
+    }
+  });
+
+  // ============================================================
+  // НАСТРОЙКИ
+  // ============================================================
+  const settingsInputs = {
+    javaForceMajor:   $("javaForceMajor"),
+    javaRequireExact: $("javaRequireExact"),
+    javaPreferBundled: $("javaPreferBundled"),
+    javaJvmArgs:      $("javaJvmArgs"),
+    javaCustomPath:   $("javaCustomPath"),
+    memAuto:          $("memAuto"),
+    memMin:           $("memMin"),
+    memMax:           $("memMax"),
+    launchExtraArgs:  $("launchExtraArgs"),
+    launchMinimize:   $("launchMinimize"),
+    launchClose:      $("launchClose"),
+    launchAutoConsole: $("launchAutoConsole"),
+    launchLogToFile:  $("launchLogToFile"),
+    launchWidth:      $("launchWidth"),
+    launchHeight:     $("launchHeight"),
+    launchFullscreen: $("launchFullscreen"),
+    dlConcurrency:    $("dlConcurrency"),
+    dlAttempts:       $("dlAttempts"),
+    dlResources:      $("dlResources"),
+    dlLibraries:      $("dlLibraries"),
+    dlIdle:           $("dlIdle"),
+    contentSource:    $("contentSource"),
+    cfKey:            $("cfKey"),
+    elyTextures:      $("elyTextures"),
+    accValidate:      $("accValidate"),
+    srvMemMin:        $("srvMemMin"),
+    srvMemMax:        $("srvMemMax"),
+    srvJvmArgs:       $("srvJvmArgs"),
+    uiAnimations:     $("uiAnimations"),
+    uiAutoscroll:     $("uiAutoscroll"),
+    uiConfirmDel:     $("uiConfirmDel"),
+    uiScale:          $("uiScale"),
+    uiBuildsGroup:    $("uiBuildsGroup")
+  };
+  const btnPickJava      = $("btnPickJava");
+  const btnOpenRoot      = $("openRoot");
+  const btnOpenVer       = $("openVer");
+  const btnOpenServ      = $("openServ");
+  const btnOpenSkins     = $("openSkins");
+  const btnOpenJava      = $("openJava");
+  const btnOpenLogs      = $("openLogs");
+  const segJavaMode     = $("segJavaMode");
+  const segLwjgl2       = $("segLwjgl2");
+  const forceJavaGroup  = $("forceJavaGroup");
+  const memManualGroup  = $("memManualGroup");
+  const perBuildList    = $("perBuildList");
+  const settingsDirtyEl = $("settingsDirty");
+  const btnSettingsSave = $("btnSettingsSave");
+  const btnSettingsReset = $("btnSettingsReset");
+  const settingsBody    = $("settingsBody");
+  const settingsTabs    = $("settingsTabs");
+
+  let perBuildDraft = {};     // черновик переопределений по сборкам
+  let settingsDirty = false;
+
+  // поведение интерфейса из настроек (доступно и до открытия вкладки)
+  function autoOpenConsole() {
+    return !state.settings || state.settings.launch.autoOpenConsole !== false;
+  }
+  function autoScrollConsole() {
+    return !state.settings || state.settings.ui.consoleAutoscroll !== false;
+  }
+  function applyUiSettings() {
+    document.body.classList.toggle("no-anim", !!(state.settings && state.settings.ui.animations === false));
+    if (state.settings && Number.isFinite(state.settings.ui.scale)) {
+      try { document.documentElement.style.fontSize = Math.max(12, Math.round(state.settings.ui.scale * 16)) + "px"; } catch (_) {}
+    } else {
+      try { document.documentElement.style.fontSize = "16px"; } catch (_) {}
+    }
+  }
+
+  // подтверждение удаления: уважает настройку «Интерфейс → спрашивать подтверждение»
+  function confirmDelete(msg) {
+    if (state.settings && state.settings.ui && state.settings.ui.confirmDelete === false) return true;
+    return confirm(msg);
+  }
+
+  function fillJavaSelect(sel, includeAuto) {
+    sel.innerHTML = "";
+    if (includeAuto) {
+      const o = document.createElement("option");
+      o.value = "auto";
+      o.textContent = "Как в общих";
+      sel.appendChild(o);
+    }
+    for (const m of state.javaMajors) {
+      const o = document.createElement("option");
+      o.value = String(m);
+      o.textContent = "Java " + m;
+      sel.appendChild(o);
+    }
+  }
+
+  // ---------- сегментированные переключатели ----------
+  function setSeg(el, value) {
+    if (!el) return;
+    for (const b of el.querySelectorAll(".seg-btn")) {
+      b.classList.toggle("active", b.dataset.value === value);
+    }
+    el.dataset.value = value;
+  }
+  const getSeg = (el) => (el ? el.dataset.value : "");
+
+  segJavaMode.addEventListener("click", (e) => {
+    const b = e.target.closest(".seg-btn");
+    if (!b) return;
+    setSeg(segJavaMode, b.dataset.value);
+    forceJavaGroup.classList.toggle("seg-off", getSeg(segJavaMode) !== "force");
+    markDirty();
+  });
+  segLwjgl2.addEventListener("click", (e) => {
+    const b = e.target.closest(".seg-btn");
+    if (!b) return;
+    setSeg(segLwjgl2, b.dataset.value);
+    markDirty();
+  });
+
+  // умное распределение ОЗУ: галочка блокирует ручные поля Xms/Xmx
+  function applyMemAutoUi() {
+    memManualGroup.classList.toggle("seg-off", settingsInputs.memAuto.checked);
+    settingsInputs.memMin.disabled = settingsInputs.memAuto.checked;
+    settingsInputs.memMax.disabled = settingsInputs.memAuto.checked;
+  }
+  settingsInputs.memAuto.addEventListener("change", () => { applyMemAutoUi(); markDirty(); });
+
+  const openF = (which) => async () => {
+    const r = await window.api.openFolder(which);
+    if (!r.ok) toast(r.error, "error");
+  };
+  if (btnOpenRoot) btnOpenRoot.addEventListener("click", openF("root"));
+  if (btnOpenVer) btnOpenVer.addEventListener("click", openF("ver"));
+  if (btnOpenServ) btnOpenServ.addEventListener("click", openF("serv"));
+  if (btnOpenSkins) btnOpenSkins.addEventListener("click", openF("skins"));
+  if (btnOpenJava) btnOpenJava.addEventListener("click", openF("java"));
+  if (btnOpenLogs) btnOpenLogs.addEventListener("click", openF("logs"));
+
+  if (btnPickJava) {
+    btnPickJava.addEventListener("click", async () => {
+      const p = await window.api.pickJava();
+      if (p) { settingsInputs.javaCustomPath.value = p; markDirty(); }
+    });
+  }
+  if (settingsInputs.javaCustomPath) {
+    settingsInputs.javaCustomPath.addEventListener("input", markDirty);
+  }
+
+  function markDirty() {
+    settingsDirty = true;
+    settingsDirtyEl.hidden = false;
+    btnSettingsSave.classList.add("dirty");
+  }
+
+  // ---------- вкладки ----------
+  settingsTabs.addEventListener("click", (e) => {
+    const b = e.target.closest(".stab");
+    if (!b) return;
+    state.settingsTab = b.dataset.tab;
+    for (const t of settingsTabs.querySelectorAll(".stab")) t.classList.toggle("active", t === b);
+    for (const p of settingsBody.querySelectorAll(".settings-pane")) {
+      const on = p.dataset.pane === state.settingsTab;
+      p.classList.toggle("active", on);
+      if (on) animateIn(p, "pane-anim");
+    }
+  });
+
+  // ---------- переопределения по сборкам ----------
+  function renderPerBuild() {
+    perBuildList.innerHTML = "";
+    if (!state.buildInfo.length) {
+      perBuildList.innerHTML = '<div class="empty">Сборок пока нет.</div>';
+      return;
+    }
+    state.buildInfo.forEach((b, i) => {
+      const ov = perBuildDraft[b.name] || {};
+      const row = document.createElement("div");
+      row.className = "pb-row";
+      row.style.animationDelay = (i * 30) + "ms";
+      row.innerHTML =
+        '<div class="pb-head">' +
+          '<span class="pb-name">' + esc(b.name) + '</span>' +
+          '<span class="pb-ver">' + esc(b.version || "?") +
+            (b.requiredJava ? ' · нужна Java ' + esc(b.requiredJava) : "") + '</span>' +
+        '</div>' +
+        '<div class="pb-controls">' +
+          '<label class="sp-mini">Java<select class="sp-input pb-java"></select></label>' +
+          '<label class="sp-mini">Xms<input class="sp-input pb-xms" placeholder="как в общих" /></label>' +
+          '<label class="sp-mini">Xmx<input class="sp-input pb-xmx" placeholder="как в общих" /></label>' +
+          '<label class="sp-mini pb-flags">Флаги<input class="sp-input mono pb-args" placeholder="как в общих" /></label>' +
+        '</div>';
+
+      const sel = row.querySelector(".pb-java");
+      fillJavaSelect(sel, true);
+      sel.value = ov.javaMode === "force" ? String(ov.javaMajor) : "auto";
+      row.querySelector(".pb-xms").value = ov.memoryMin || "";
+      row.querySelector(".pb-xmx").value = ov.memoryMax || "";
+      row.querySelector(".pb-args").value = ov.jvmArgs || "";
+
+      const read = () => {
+        const cur = perBuildDraft[b.name] || {};
+        if (sel.value === "auto") { delete cur.javaMode; delete cur.javaMajor; }
+        else { cur.javaMode = "force"; cur.javaMajor = Number(sel.value); }
+        const setOr = (k, v) => { if (v) cur[k] = v; else delete cur[k]; };
+        setOr("memoryMin", row.querySelector(".pb-xms").value.trim());
+        setOr("memoryMax", row.querySelector(".pb-xmx").value.trim());
+        setOr("jvmArgs", row.querySelector(".pb-args").value.trim());
+        if (Object.keys(cur).length) perBuildDraft[b.name] = cur;
+        else delete perBuildDraft[b.name];
+        markDirty();
+      };
+      row.addEventListener("change", read);
+      row.addEventListener("input", read);
+
+      perBuildList.appendChild(row);
+    });
+  }
+
+  // ---------- сбор/разбор/сохранение ----------
+  function collectSettings() {
+    return {
+      java: {
+        mode: getSeg(segJavaMode) === "force" ? "force" : "auto",
+        forceMajor: Number(settingsInputs.javaForceMajor.value) || state.javaMajors[0],
+        requireExact: settingsInputs.javaRequireExact.checked,
+        preferBundled: settingsInputs.javaPreferBundled.checked,
+        jvmArgs: settingsInputs.javaJvmArgs.value.trim(),
+        customPath: settingsInputs.javaCustomPath ? settingsInputs.javaCustomPath.value.trim() : ""
+      },
+      memory: {
+        auto: settingsInputs.memAuto.checked,
+        min: settingsInputs.memMin.value.trim(),
+        max: settingsInputs.memMax.value.trim()
+      },
+      perBuild: perBuildDraft,
+      launch: {
+        lwjgl2Fallback: getSeg(segLwjgl2) || "auto",
+        extraGameArgs: settingsInputs.launchExtraArgs.value.trim(),
+        minimizeOnLaunch: settingsInputs.launchMinimize.checked,
+        closeOnLaunch: settingsInputs.launchClose.checked,
+        autoOpenConsole: settingsInputs.launchAutoConsole.checked,
+        logToFile: settingsInputs.launchLogToFile.checked,
+        width: Math.max(0, Number(settingsInputs.launchWidth.value) || 0),
+        height: Math.max(0, Number(settingsInputs.launchHeight.value) || 0),
+        fullscreen: settingsInputs.launchFullscreen.checked
+      },
+      downloads: {
+        concurrency: Number(settingsInputs.dlConcurrency.value),
+        attempts: Number(settingsInputs.dlAttempts.value),
+        resourcesBase: settingsInputs.dlResources.value.trim(),
+        librariesBase: settingsInputs.dlLibraries.value.trim(),
+        idleTimeout: Number(settingsInputs.dlIdle.value) || 30
+      },
+      content: {
+        defaultSource: settingsInputs.contentSource.value === "curseforge" ? "curseforge" : "modrinth",
+        curseforgeKey: settingsInputs.cfKey.value.trim(),
+        elyTextures: settingsInputs.elyTextures.checked
+      },
+      accounts: {
+        validateOnLaunch: settingsInputs.accValidate.checked
+      },
+      servers: {
+        memoryMin: settingsInputs.srvMemMin.value.trim(),
+        memoryMax: settingsInputs.srvMemMax.value.trim(),
+        jvmArgs: settingsInputs.srvJvmArgs.value.trim()
+      },
+      ui: {
+        animations: settingsInputs.uiAnimations.checked,
+        consoleAutoscroll: settingsInputs.uiAutoscroll.checked,
+        confirmDelete: settingsInputs.uiConfirmDel.checked,
+        scale: Number(settingsInputs.uiScale.value) || 1,
+        buildsGroup: settingsInputs.uiBuildsGroup.value
+      }
+    };
+  }
+
+  function fillSettings(s) {
+    state.settings = s;
+    setSeg(segJavaMode, s.java.mode === "force" ? "force" : "auto");
+    forceJavaGroup.classList.toggle("seg-off", s.java.mode !== "force");
+    settingsInputs.javaForceMajor.value = String(s.java.forceMajor);
+    settingsInputs.javaRequireExact.checked = s.java.requireExact === true;
+    settingsInputs.javaCustomPath.value = (s.java && s.java.customPath) || "";
+    settingsInputs.memAuto.checked = s.memory.auto !== false;
+    settingsInputs.memMin.value = s.memory.min || "";
+    settingsInputs.memMax.value = s.memory.max || "";
+    applyMemAutoUi();
+    setSeg(segLwjgl2, s.launch.lwjgl2Fallback || "auto");
+    settingsInputs.launchExtraArgs.value = s.launch.extraGameArgs || "";
+    settingsInputs.launchMinimize.checked = s.launch.minimizeOnLaunch === true;
+    settingsInputs.launchClose.checked = s.launch.closeOnLaunch === true;
+    settingsInputs.launchAutoConsole.checked = s.launch.autoOpenConsole !== false;
+    settingsInputs.launchLogToFile.checked = s.launch.logToFile === true;
+    settingsInputs.launchWidth.value = s.launch.width || 0;
+    settingsInputs.launchHeight.value = s.launch.height || 0;
+    settingsInputs.launchFullscreen.checked = s.launch.fullscreen === true;
+    settingsInputs.dlConcurrency.value = String(s.downloads.concurrency);
+    settingsInputs.dlAttempts.value = String(s.downloads.attempts);
+    settingsInputs.dlResources.value = s.downloads.resourcesBase || "";
+    settingsInputs.dlLibraries.value = s.downloads.librariesBase || "";
+    settingsInputs.dlIdle.value = String(s.downloads.idleTimeout || 30);
+    settingsInputs.contentSource.value = (s.content && s.content.defaultSource === "curseforge") ? "curseforge" : "modrinth";
+    settingsInputs.cfKey.value = (s.content && s.content.curseforgeKey) || "";
+    settingsInputs.elyTextures.checked = s.content.elyTextures !== false;
+    settingsInputs.accValidate.checked = s.accounts.validateOnLaunch !== false;
+    settingsInputs.srvMemMin.value = (s.servers && s.servers.memoryMin) || "";
+    settingsInputs.srvMemMax.value = (s.servers && s.servers.memoryMax) || "";
+    settingsInputs.srvJvmArgs.value = (s.servers && s.servers.jvmArgs) || "";
+    settingsInputs.uiAnimations.checked = s.ui.animations !== false;
+    settingsInputs.uiAutoscroll.checked = s.ui.consoleAutoscroll !== false;
+    settingsInputs.uiConfirmDel.checked = s.ui.confirmDelete !== false;
+    settingsInputs.uiScale.value = s.ui.scale || 1;
+    settingsInputs.uiBuildsGroup.value = s.ui.buildsGroup || "none";
+    // группировка сборок: выбор пользователя в шапке (localStorage) главнее настройки
+    if (!localStorage.getItem("cmcl.buildsGroup")) {
+      buildsGroupSel.value = s.ui.buildsGroup || "none";
+      animateList = true;
+      render();
+    }
+    perBuildDraft = JSON.parse(JSON.stringify(s.perBuild || {}));
+    applyUiSettings();
+  }
+
+  function markSaved() {
+    settingsDirty = false;
+    settingsDirtyEl.hidden = true;
+    btnSettingsSave.classList.remove("dirty");
+  }
+
+  async function refreshSettings() {
+    const res = await window.api.getSettings();
+    if (!res.ok) { toast(res.error, "error"); return; }
+    state.javaMajors = (res.javaMajors && res.javaMajors.length) ? res.javaMajors : state.javaMajors;
+    fillJavaSelect(settingsInputs.javaForceMajor, false);
+    fillSettings(res.settings);
+    const bi = await window.api.buildInfo();
+    state.buildInfo = (bi.ok && bi.builds) ? bi.builds : [];
+    renderPerBuild();
+    markSaved();
+  }
+
+  btnSettingsSave.addEventListener("click", async () => {
+    const res = await window.api.saveSettings(collectSettings());
+    if (!res.ok) { toast(res.error, "error"); return; }
+    fillSettings(res.settings);
+    renderPerBuild();
+    markSaved();
+    btnSettingsSave.textContent = "Сохранено";
+    setTimeout(() => { btnSettingsSave.textContent = "Сохранить"; }, 1200);
+    toast("Настройки сохранены", "ok");
+  });
+
+  btnSettingsReset.addEventListener("click", async () => {
+    if (!confirm("Сбросить все настройки к значениям по умолчанию?")) return;
+    const res = await window.api.resetSettings();
+    if (!res.ok) { toast(res.error, "error"); return; }
+    await refreshSettings();
+    toast("Настройки сброшены", "ok");
+  });
+
+  // любое изменение полей (кроме строк сборок — они помечают сами) = «не сохранено»
+  const onFieldEdit = (e) => { if (!e.target.closest(".pb-row")) markDirty(); };
+  settingsBody.addEventListener("input", onFieldEdit);
+  settingsBody.addEventListener("change", onFieldEdit);
+
+  // ============================================================
+  // РЕДАКТИРОВАНИЕ СБОРКИ
+  // ============================================================
+  function openEditModal(name) {
+    const b = state.builds.find((x) => x.name === name);
+    if (!b) return;
+    state.editBuild = name;
+    editModalLoader.textContent = loaderLabel(b.loader).toUpperCase() +
+      (b.loaderVersion ? " " + b.loaderVersion : "");
+    editNameIn.value = b.name;
+    editErrorEl.hidden = true;
+    fillJavaSelect(editJavaSel, true);
+    const ov = (state.settings && state.settings.perBuild && state.settings.perBuild[name]) || {};
+    editJavaSel.value = ov.javaMode === "force" ? String(ov.javaMajor) : "auto";
+    editMemMin.value = ov.memoryMin || "";
+    editMemMax.value = ov.memoryMax || "";
+    editModal.hidden = false;
+    animateIn(editModal, "overlay-anim");
+    animateIn(editModal.querySelector(".modal"), "modal-anim");
+    setTimeout(() => editNameIn.focus(), 50);
+  }
+
+  function closeEditModal() {
+    editModal.classList.add("fade-out");
+    setTimeout(() => {
+      editModal.hidden = true;
+      editModal.classList.remove("fade-out");
+    }, 140);
+  }
+
+  btnEditCancel.addEventListener("click", closeEditModal);
+  editModal.addEventListener("click", (e) => { if (e.target === editModal) closeEditModal(); });
+
+  btnEditSave.addEventListener("click", async () => {
+    const oldName = state.editBuild;
+    if (!oldName) return;
+    const newName = editNameIn.value.trim();
+    editErrorEl.hidden = true;
+    if (!newName) { editErrorEl.textContent = "Введите название"; editErrorEl.hidden = false; return; }
+
+    // 1. переименование
+    let finalName = oldName;
+    if (newName !== oldName) {
+      const res = await window.api.renameBuild({ oldName, newName });
+      if (!res.ok) { editErrorEl.textContent = res.error; editErrorEl.hidden = false; return; }
+      finalName = res.name;
+      if (state.selected === oldName) state.selected = finalName;
+    }
+
+    // 2. переопределения Java/памяти через настройки
+    const ov = {};
+    if (editJavaSel.value !== "auto") { ov.javaMode = "force"; ov.javaMajor = Number(editJavaSel.value); }
+    if (editMemMin.value.trim()) ov.memoryMin = editMemMin.value.trim();
+    if (editMemMax.value.trim()) ov.memoryMax = editMemMax.value.trim();
+
+    const cur = await window.api.getSettings();
+    if (cur.ok) {
+      const s = cur.settings;
+      s.perBuild = s.perBuild || {};
+      delete s.perBuild[oldName];
+      if (Object.keys(ov).length) s.perBuild[finalName] = ov;
+      else delete s.perBuild[finalName];
+      const saved = await window.api.saveSettings(s);
+      if (saved.ok) state.settings = saved.settings;
+    }
+
+    closeEditModal();
+    animateList = true;
+    await refreshBuilds();
+    const nb = state.builds.find((x) => x.name === finalName);
+    if (nb) selectBuild(nb, true);
+    toast("Сборка «" + finalName + "» обновлена", "ok");
+  });
+
+  // ============================================================
+  // МОДЫ (Modrinth + CurseForge)
+  // ============================================================
+  async function refreshMods() {
+    const b = currentBuildObj();
+    modsBuildName.textContent = b ? b.name : "—";
+    modsQuery.value = "";
+    await refreshModsSources();
+    await loadInstalled();
+  }
+
+  function currentBuildObj() {
+    return state.builds.find((x) => bNameMatch(x, state.selected)) || null;
+  }
+  function bNameMatch(x, name) { return x.name === name; }
+
+  async function loadInstalled() {
+    if (!state.selected) {
+      modsList.innerHTML = '<div class="empty">Сначала выберите сборку во вкладке «Сборки».</div>';
+      return;
+    }
+    modsList.innerHTML = '<div class="empty">Загрузка…</div>';
+    const res = await window.api.modsListInstalled({ build: state.selected, type: state.modsTab });
+    if (!res.ok) { modsList.innerHTML = '<div class="empty">' + esc(res.error) + "</div>"; return; }
+    renderModsList(res.items, true);
+  }
+
+  function renderModsList(items, installed) {
+    modsList.innerHTML = "";
+    if (!items.length) {
+      modsList.innerHTML = '<div class="empty">' +
+        (installed
+          ? "В этой категории пока ничего нет.<br>Введите название и нажмите «Найти»."
+          : "Ничего не найдено.") + "</div>";
+      return;
+    }
+    items.forEach((it, i) => {
+      const item = document.createElement("div");
+      item.className = "build-item anim";
+      item.style.animationDelay = Math.min(i * 22, 300) + "ms";
+
+      if (installed) {
+        const known = !!it.projectId && it.source !== "unknown";
+        const src = it.source && it.source !== "unknown"
+          ? sourceName(it.source) + (it.version ? " · " + esc(String(it.version)) : "")
+          : "источник неизвестен";
+        item.innerHTML =
+          '<div class="bi-badge mod">▣</div>' +
+          '<div class="bi-main">' +
+            '<div class="bi-name"><span class="txt">' + esc(it.name) + "</span></div>" +
+            '<div class="bi-meta">Размер: ' + fmtSize(it.size) + " · " + src + "</div>" +
+            '<div class="bi-meta dim dep-hint">Клик по строке — дерево зависимостей</div>' +
+          "</div>" +
+          '<div class="bi-actions">' +
+            '<button class="bi-btn bi-deps" title="Показать дерево зависимостей">Зависимости</button>' +
+            '<button class="bi-btn bi-ver" title="' +
+              (known ? "Изменить версию мода" : "Проект неизвестен — версию изменить нельзя") + '"' +
+              (known ? "" : " disabled") + ">⟳ Версия</button>" +
+            '<button class="bi-del" title="Удалить">×</button>' +
+          "</div>";
+
+        // клик по строке — дерево зависимостей (сворачивается повторным кликом)
+        item.addEventListener("click", (ev) => {
+          if (ev.target.closest(".bi-actions")) return;
+          toggleDeps(item, it);
+        });
+
+        const depsBtn = item.querySelector(".bi-deps");
+        depsBtn.addEventListener("click", (ev) => {
+          ev.stopPropagation();
+          toggleDeps(item, it);
+        });
+
+        item.querySelector(".bi-del").addEventListener("click", async (ev) => {
+          ev.stopPropagation();
+          if (!confirmDelete("Удалить «" + it.name + "»?")) return;
+          const r = await window.api.modsDeleteInstalled({ build: state.selected, type: state.modsTab, file: it.name });
+          if (!r.ok) { toast(r.error, "error"); return; }
+          toast("Удалено", "ok");
+          loadInstalled();
+        });
+
+        const verBtn = item.querySelector(".bi-ver");
+        verBtn.addEventListener("click", (ev) => {
+          ev.stopPropagation();
+          if (!known) { toast("Источник мода неизвестен — версию изменить нельзя", "error"); return; }
+          openVersionsModal(it);
+        });
+      } else {
+        item.innerHTML =
+          '<div class="bi-badge mod"></div>' +
+          '<div class="bi-main">' +
+            '<div class="bi-name"><span class="txt">' + esc(it.title) + "</span>" +
+              '<span class="bi-ver">' + esc(it.author || "") + "</span></div>" +
+            '<div class="bi-meta">' + esc(it.description || "") + "</div>" +
+            '<div class="bi-meta dim">' + esc(sourceName(it.source)) + " · загрузок: " +
+              fmtNum(it.downloads || 0) + "</div>" +
+          "</div>" +
+          '<div class="bi-actions"><button class="bi-btn bi-install">Установить</button></div>';
+
+        const badge = item.querySelector(".bi-badge");
+        badge.textContent = (String(it.title || "?")[0]).toUpperCase();
+        if (it.icon) {
+          const img = document.createElement("img");
+          img.className = "mod-icon";
+          img.alt = "";
+          img.src = it.icon;
+          img.addEventListener("error", () => img.remove());
+          badge.textContent = "";
+          badge.appendChild(img);
+        }
+
+        const installBtn = item.querySelector(".bi-install");
+        installBtn.addEventListener("click", async (ev) => {
+          ev.stopPropagation();
+          if (state.modsTab === "modpacks") { installModpack(it); return; }
+          installBtn.disabled = true;
+          installBtn.textContent = "…";
+          const r = await window.api.modsInstall({
+            build: state.selected, projectId: it.projectId, source: it.source, type: state.modsTab
+          });
+          if (!r.ok) {
+            toast(r.error, "error");
+            installBtn.disabled = false;
+            installBtn.textContent = "Установить";
+            return;
+          }
+          toast("Установлено: " + (r.title || it.title), "ok");
+          installBtn.disabled = false;
+          installBtn.textContent = "Установить";
+        });
+      }
+      modsList.appendChild(item);
+    });
+  }
+
+  // ============================================================
+  // УСТАНОВЛЕННЫЕ МОДЫ: смена версии + дерево зависимостей
+  // ============================================================
+  const verModal   = $("verModal");
+  const verListEl  = $("verList");
+  const verErrorEl = $("verError");
+  const verNameEl  = $("verModName");
+  const btnVerClose = $("verClose");
+  let verContext = null;   // мод, для которого открыто окно версий
+
+  function openVersionsModal(it) {
+    const b = currentBuildObj();
+    if (!b) return;
+    verContext = it;
+    verNameEl.textContent = it.title || it.name;
+    verErrorEl.hidden = true;
+    verListEl.innerHTML = '<div class="dep-loading">Загрузка версий…</div>';
+    verModal.hidden = false;
+    animateIn(verModal, "overlay-anim");
+    animateIn(verModal.querySelector(".modal"), "modal-anim");
+    window.api.modsVersions({
+      projectId: it.projectId, source: it.source, type: state.modsTab,
+      gameVersion: b.version, loader: b.loader || "vanilla"
+    }).then((res) => {
+      if (!res.ok) {
+        verListEl.innerHTML = "";
+        verErrorEl.textContent = res.error;
+        verErrorEl.hidden = false;
+        return;
+      }
+      renderVersions(res.versions || []);
+    });
+  }
+
+  function renderVersions(versions) {
+    verListEl.innerHTML = "";
+    if (!versions.length) {
+      verListEl.innerHTML = '<div class="dep-loading dim">Версий не найдено</div>';
+      return;
+    }
+    const curId = String(verContext.versionId || "");
+    versions.forEach((v) => {
+      const isCur = curId && String(v.versionId) === curId;
+      const row = document.createElement("div");
+      row.className = "ver-row" + (isCur ? " current" : "") + (v.compatible ? "" : " warn");
+      const date = v.date ? new Date(v.date).toLocaleDateString("ru-RU") : "";
+      row.innerHTML =
+        '<span class="ver-name">' + esc(v.version || v.name || v.versionId) + "</span>" +
+        (v.name && v.name !== v.version ? '<span class="ver-sub">' + esc(v.name) + "</span>" : "") +
+        '<span class="ver-meta">' + esc(date) +
+          (v.compatible ? "" : " · может не подойти") + "</span>" +
+        (isCur ? '<span class="ver-cur">текущая</span>' : "");
+      if (!isCur) row.addEventListener("click", () => changeVersion(v));
+      verListEl.appendChild(row);
+    });
+  }
+
+  async function changeVersion(v) {
+    if (!verContext) return;
+    verErrorEl.hidden = true;
+    verListEl.querySelectorAll(".ver-row").forEach((r) => r.classList.add("busy"));
+    const r = await window.api.modsChangeVersion({
+      build: state.selected, type: state.modsTab,
+      projectId: verContext.projectId, source: verContext.source || v.source,
+      versionId: v.versionId, oldFile: verContext.name
+    });
+    if (!r.ok) {
+      verListEl.querySelectorAll(".ver-row").forEach((x) => x.classList.remove("busy"));
+      verErrorEl.textContent = r.error;
+      verErrorEl.hidden = false;
+      return;
+    }
+    closeVerModal();
+    toast("Версия обновлена: " + (r.version || v.version || ""), "ok");
+    loadInstalled();
+  }
+
+  function closeVerModal() { verModal.hidden = true; verContext = null; }
+  btnVerClose.addEventListener("click", closeVerModal);
+  verModal.addEventListener("click", (e) => { if (e.target === verModal) closeVerModal(); });
+
+  // ---- дерево зависимостей (клик по строке установленного мода) ----
+  async function toggleDeps(item, it) {
+    const exist = item.querySelector(".dep-tree");
+    if (exist) { exist.remove(); return; }
+    if (!it.projectId) { toast("Мод добавлен вручную — зависимости неизвестны", "error"); return; }
+
+    const box = document.createElement("div");
+    box.className = "dep-tree";
+    box.innerHTML = '<div class="dep-loading">Зависимости…</div>';
+    item.appendChild(box);
+
+    const res = await window.api.modsDeps({
+      build: state.selected, type: state.modsTab,
+      projectId: it.projectId, source: it.source, versionId: it.versionId, maxDepth: 3
+    });
+    if (!res.ok || !res.tree) {
+      box.innerHTML = '<div class="dep-loading dim">' + esc(res.error || "Не удалось получить зависимости") + "</div>";
+      return;
+    }
+    box.innerHTML = "";
+    const add = (n, lvl) => {
+      box.appendChild(depRow(n, lvl));
+      for (const c of n.children || []) add(c, lvl + 1);
+    };
+    add(res.tree, 0);
+    if (!res.tree.children || !res.tree.children.length) {
+      box.insertAdjacentHTML("beforeend",
+        '<div class="dep-loading dim">Зависимостей нет' +
+        (res.tree.error ? " · источники: " + esc(res.tree.error) : "") + "</div>");
+    }
+  }
+
+  function depRow(n, lvl) {
+    const row = document.createElement("div");
+    row.className = "dep-row" + (n.installed ? " ok" : " miss") + (n.dep === "root" ? " root" : "");
+    row.style.paddingLeft = (12 + lvl * 18) + "px";
+    const kind = n.dep === "root" ? "этот мод"
+      : n.dep === "required" ? "обязательная"
+      : n.dep === "optional" ? "опциональная"
+      : n.dep === "embedded" ? "встроена" : "";
+    row.innerHTML =
+      '<span class="dep-mark">' + (n.installed ? "●" : "○") + "</span>" +
+      '<span class="dep-name">' + esc(n.title || n.projectId) + "</span>" +
+      (kind ? '<span class="dep-kind">' + kind + "</span>" : "") +
+      (n.dep === "root" ? "" : '<span class="dep-state">' + (n.installed ? "установлен" : "не установлен") + "</span>");
+
+    if (n.dep !== "root" && !n.installed && n.dep !== "optional") {
+      const btn = document.createElement("button");
+      btn.className = "bi-btn bi-install dep-install";
+      btn.textContent = "Установить";
+      btn.addEventListener("click", async (ev) => {
+        ev.stopPropagation();
+        btn.disabled = true;
+        btn.textContent = "…";
+        const r = await window.api.modsInstall({
+          build: state.selected, projectId: n.projectId, source: n.source, type: state.modsTab
+        });
+        if (!r.ok) {
+          toast(r.error, "error");
+          btn.disabled = false;
+          btn.textContent = "Установить";
+          return;
+        }
+        toast("Установлено: " + (r.title || n.projectId), "ok");
+        n.installed = true;
+        row.classList.add("ok");
+        row.classList.remove("miss");
+        row.querySelector(".dep-state").textContent = "установлен";
+        btn.remove();
+      });
+      row.appendChild(btn);
+    }
+    return row;
+  }
+
+  async function doModsSearch() {
+    if (!state.selected) { toast("Сначала выберите сборку", "error"); return; }
+    const b = currentBuildObj();
+    if (!b) return;
+    const source = modsSource.value;
+    if (state.modsTab === "worlds" && source !== "curseforge") {
+      modsList.innerHTML = '<div class="empty">Миры есть только на CurseForge.<br>' +
+        "Выберите источник CurseForge (нужен API-ключ в настройках).</div>";
+      return;
+    }
+    modsList.innerHTML = '<div class="empty">Поиск…</div>';
+    const res = await window.api.modsSearch({
+      type: state.modsTab, query: modsQuery.value.trim(), source,
+      gameVersion: b.version, loader: b.loader || "vanilla"
+    });
+    if (!res.ok) { modsList.innerHTML = '<div class="empty">' + esc(res.error) + "</div>"; return; }
+    renderModsList(res.hits || [], false);
+  }
+
+  async function installModpack(hit) {
+    const def = String(hit.title || "Modpack").replace(/[/\\:*?"<>|]/g, " ").replace(/\s+/g, " ").trim().slice(0, 40);
+    if (!confirm("Создать новую сборку «" + def + "» из модпака?")) return;
+    modsList.innerHTML = '<div class="empty">Установка модпака…<br>Это может занять время.</div>';
+    const res = await window.api.modpackInstall({
+      projectId: hit.projectId, source: hit.source, name: def
+    });
+    if (!res.ok) { toast(res.error, "error"); await loadInstalled(); return; }
+    toast("Модпак установлен: " + res.name, "ok");
+    animateList = true;
+    await refreshBuilds();
+    showView("library");
+  }
+
+  function sourceName(src) {
+    return src === "curseforge" ? "CurseForge" : "Modrinth";
+  }
+
+  /** Включает/выключает CurseForge в зависимости от наличия API-ключа */
+  async function refreshModsSources() {
+    let info = { default: "modrinth", curseforge: false };
+    try {
+      const res = await window.api.modsSources();
+      if (res && res.ok) info = res;
+    } catch (_) {}
+    const cfOpt = modsSource.querySelector('option[value="curseforge"]');
+    if (cfOpt) {
+      cfOpt.disabled = !info.curseforge;
+      cfOpt.textContent = info.curseforge ? "CurseForge" : "CurseForge (нужен API-ключ)";
+    }
+    if (info.curseforge && info.default === "curseforge") modsSource.value = "curseforge";
+    else if (!info.curseforge) modsSource.value = "modrinth";
+  }
+
+  function fmtSize(n) {
+    if (!n) return "0 Б";
+    if (n >= 1024 * 1024) return (n / (1024 * 1024)).toFixed(1) + " МБ";
+    if (n >= 1024) return Math.round(n / 1024) + " КБ";
+    return n + " Б";
+  }
+  function fmtNum(n) {
+    if (n >= 1000000) return (n / 1000000).toFixed(1) + "M";
+    if (n >= 1000) return (n / 1000).toFixed(1) + "K";
+    return String(n);
+  }
+
+  modsTabs.addEventListener("click", (e) => {
+    const b = e.target.closest(".stab");
+    if (!b) return;
+    state.modsTab = b.dataset.modtab;
+    for (const t of modsTabs.querySelectorAll(".stab")) t.classList.toggle("active", t === b);
+    loadInstalled();
+  });
+  modsSearchBtn.addEventListener("click", doModsSearch);
+  modsQuery.addEventListener("keydown", (e) => { if (e.key === "Enter") doModsSearch(); });
+  modsSource.addEventListener("change", () => {
+    if (modsQuery.value.trim()) doModsSearch();
+    else loadInstalled();
+  });
+
+  window.api.onModsProgress((p) => {
+    if (p && p.build) modsBuildName.textContent = p.build + (p.percent != null ? " · " + p.percent + "%" : "");
+    if (state.importing && p) {
+      importText.textContent = p.text || "Импорт…";
+      importBar.style.width = (p.percent || 0) + "%";
+    }
+  });
+
+  // ============================================================
+  // ЭКСПОРТ / ИМПОРТ СБОРКИ (.ccli)
+  // ============================================================
+  function fmtBytes(n) {
+    if (!n) return "0 Б";
+    if (n >= 1024 * 1024) return (n / (1024 * 1024)).toFixed(1) + " МБ";
+    if (n >= 1024) return Math.round(n / 1024) + " КБ";
+    return n + " Б";
+  }
+
+  function openExportModal(name) {
+    state.exportBuild = name;
+    state.exportMode = "gz";
+    exportBuildName.textContent = name;
+    exportSummary.textContent = "Подсчёт содержимого…";
+    exportErrorEl.hidden = true;
+    exportConfigs.checked = false;
+    exportModeField.hidden = true;
+    for (const b of exportModeSeg.querySelectorAll(".seg-btn")) {
+      b.classList.toggle("active", b.dataset.cclimode === "gz");
+    }
+    exportModal.hidden = false;
+    animateIn(exportModal, "overlay-anim");
+    animateIn(exportModal.querySelector(".modal"), "modal-anim");
+
+    window.api.ccliInfo(name).then((res) => {
+      if (!res.ok) { exportSummary.textContent = res.error || "Ошибка"; return; }
+      const c = res.counts || {};
+      exportSummary.innerHTML =
+        "Моды: <b>" + (c.mods || 0) + "</b> · Ресурс-паки: <b>" + (c.resourcepacks || 0) +
+        "</b> · Шейдеры: <b>" + (c.shaderpacks || 0) + "</b> · Миры: <b>" + (c.worlds || 0) + "</b>" +
+        (res.configs ? "<br>Конфигов: <b>" + res.configs + "</b> (" + fmtBytes(res.configsSize) + ")" : "");
+      exportConfigs.disabled = !res.configs;
+      if (!res.configs) exportConfigs.parentElement.title = "В сборке нет папок config/ и defaultconfigs/";
+    });
+  }
+
+  function closeExportModal() {
+    exportModal.hidden = true;
+    state.exportBuild = null;
+  }
+
+  exportConfigs.addEventListener("change", () => {
+    exportModeField.hidden = !exportConfigs.checked;
+  });
+  exportModeSeg.addEventListener("click", (e) => {
+    const b = e.target.closest(".seg-btn");
+    if (!b) return;
+    state.exportMode = b.dataset.cclimode === "text" ? "text" : "gz";
+    for (const x of exportModeSeg.querySelectorAll(".seg-btn")) x.classList.toggle("active", x === b);
+  });
+  exportCancel.addEventListener("click", closeExportModal);
+  exportModal.addEventListener("click", (e) => { if (e.target === exportModal) closeExportModal(); });
+
+  exportDo.addEventListener("click", async () => {
+    if (!state.exportBuild) return;
+    exportErrorEl.hidden = true;
+    exportDo.disabled = true;
+    exportDo.textContent = "…";
+    const res = await window.api.exportBuild({
+      build: state.exportBuild,
+      configs: exportConfigs.checked,
+      configMode: state.exportMode
+    });
+    exportDo.disabled = false;
+    exportDo.textContent = "Экспортировать";
+    if (res.ok) {
+      closeExportModal();
+      toast("Сборка экспортирована: " + res.path, "ok");
+    } else if (!res.canceled) {
+      exportErrorEl.textContent = res.error || "Не удалось экспортировать";
+      exportErrorEl.hidden = false;
+    }
+  });
+
+  // ---- импорт ----
+  let importFileLabel = "";
+  async function beginImport(text, label) {
+    state.importText = text;
+    importFileLabel = label || ".ccli";
+    importFileName.textContent = importFileLabel;
+    importErrorEl.hidden = true;
+    importProgWrap.hidden = true;
+    importSummary.textContent = "Чтение файла…";
+    importModal.hidden = false;
+    animateIn(importModal, "overlay-anim");
+    animateIn(importModal.querySelector(".modal"), "modal-anim");
+
+    const res = await window.api.inspectCcli(text);
+    if (!res.ok) {
+      importSummary.textContent = "";
+      importErrorEl.textContent = res.error || "Не удалось прочитать файл";
+      importErrorEl.hidden = false;
+      importDo.disabled = true;
+      return;
+    }
+    state.importInfo = res;
+    importDo.disabled = false;
+    const c = res.counts || {};
+    importSummary.innerHTML =
+      "<b>" + esc(res.mc || "?") + "</b> · " + esc(loaderLabel(res.loader)) +
+      (res.loaderVersion ? " " + esc(res.loaderVersion) : "") +
+      "<br>Моды: <b>" + (c.mods || 0) + "</b> · Ресурс-паки: <b>" + (c.resourcepacks || 0) +
+      "</b> · Шейдеры: <b>" + (c.shaderpacks || 0) + "</b> · Миры: <b>" + (c.worlds || 0) + "</b>" +
+      (res.hasConfigs ? "<br>Конфиги: <b>есть</b> (" + (res.configMode === "gz" ? "сжатые" : "текстом") + ")" : "");
+    importNameIn.value = res.name || ("Импорт " + res.mc);
+    importConfigsRow.hidden = !res.hasConfigs;
+    importConfigs.checked = !!res.hasConfigs;
+  }
+
+  function resetImport() {
+    state.importing = null;
+    state.importText = null;
+    state.importInfo = null;
+    importDo.disabled = false;
+    importDo.textContent = "Импортировать";
+    importNameIn.disabled = false;
+    importCancel.textContent = "Отмена";
+  }
+
+  function closeImportModal() {
+    importModal.hidden = true;
+    resetImport();
+  }
+
+  importCancel.addEventListener("click", () => { if (!state.importing) closeImportModal(); });
+  importModal.addEventListener("click", (e) => { if (e.target === importModal && !state.importing) closeImportModal(); });
+
+  importDo.addEventListener("click", async () => {
+    if (state.importing) { closeImportModal(); return; }
+    if (!state.importText) return;
+    const name = importNameIn.value.trim();
+    importNameIn.disabled = true;
+    importDo.textContent = "Свернуть";
+    importCancel.textContent = "Скрыть";
+    importProgWrap.hidden = false;
+    importBar.style.width = "0%";
+    importText.textContent = "Подготовка…";
+    importErrorEl.hidden = true;
+    state.importing = "__pending__";
+
+    const res = await window.api.importBuild({ data: state.importText, name, configs: importConfigs.checked });
+    state.importing = null;
+    if (!res.ok) {
+      importNameIn.disabled = false;
+      importDo.textContent = "Импортировать";
+      importCancel.textContent = "Отмена";
+      importErrorEl.textContent = res.error || "Не удалось импортировать";
+      importErrorEl.hidden = false;
+      return;
+    }
+    const s = res.summary || {};
+    closeImportModal();
+    animateList = true;
+    await refreshBuilds();
+    const nb = state.builds.find((x) => x.name === res.name);
+    if (nb) selectBuild(nb, true);
+    showView("library");
+    let msg = "Импорт «" + res.name + "»: " + (s.installed || 0) + " файлов";
+    if (s.configs) msg += ", конфигов: " + s.configs;
+    if (s.skipped) msg += ", пропущено: " + s.skipped;
+    toast(msg, s.skipped ? "error" : "ok");
+    if (s.errors && s.errors.length) {
+      console.warn("Импорт .ccli — пропущенные файлы:\n" + s.errors.join("\n"));
+    }
+  });
+
+  // ---- кастомная рамка: свернуть / закрыть ----
+  winMinBtn.addEventListener("click", () => window.api.winMinimize());
+  winCloseBtn.addEventListener("click", () => window.api.winClose());
+
+  // ---- выбор файла и drag&drop ----
+  btnImportBuild.addEventListener("click", () => { ccliFileInput.value = ""; ccliFileInput.click(); });
+  ccliFileInput.addEventListener("change", async () => {
+    const f = ccliFileInput.files && ccliFileInput.files[0];
+    if (!f) return;
+    const text = await f.text();
+    beginImport(text, f.name);
+  });
+
+  let dragDepth = 0;
+  window.addEventListener("dragenter", (e) => {
+    if (!e.dataTransfer || ![...e.dataTransfer.types].includes("Files")) return;
+    dragDepth++;
+    dropHint.hidden = false;
+  });
+  window.addEventListener("dragover", (e) => { e.preventDefault(); });
+  window.addEventListener("dragleave", () => {
+    dragDepth = Math.max(0, dragDepth - 1);
+    if (!dragDepth) dropHint.hidden = true;
+  });
+  window.addEventListener("drop", async (e) => {
+    e.preventDefault();
+    dragDepth = 0;
+    dropHint.hidden = true;
+    const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if (!f) return;
+    if (!/\.ccli$/i.test(f.name)) { toast("Поддерживаются только файлы .ccli", "error"); return; }
+    const text = await f.text();
+    showView("library");
+    beginImport(text, f.name);
+  });
+
+  // ============================================================
+  // СЕРВЕРЫ
+  // ============================================================
+  const SRV_CORE_LABELS = { vanilla: "Vanilla", paper: "Paper", purpur: "Purpur", fabric: "Fabric", forge: "Forge" };
+
+  function serverStatusOf(s, running) {
+    if (running) return { cls: "ready", text: "Работает" };
+    if (s.status === "ready") return { cls: "ready", text: "Готов" };
+    if (s.status === "error") return { cls: "error", text: s.text || "ошибка" };
+    if (s.status === "downloading") return { cls: "downloading", text: (s.text || "Установка…") + " · " + (s.percent || 0) + "%" };
+    return { cls: "downloading", text: s.text || "…" };
+  }
+
+  function bufferOf(name) {
+    return state.serverBuffers[name] || (state.serverBuffers[name] = []);
+  }
+
+  function appendServerLine(name, line) {
+    const buf = bufferOf(name);
+    buf.push(line);
+    if (buf.length > 800) buf.splice(0, buf.length - 800);
+    if (state.serverSel !== name) return;
+    const d = document.createElement("div");
+    d.className = "srv-line";
+    d.textContent = line;
+    srvConsole.appendChild(d);
+    while (srvConsole.childNodes.length > 800) srvConsole.removeChild(srvConsole.firstChild);
+    if (autoScrollConsole()) srvConsole.scrollTop = srvConsole.scrollHeight;
+  }
+
+  function renderServerConsole() {
+    const buf = state.serverSel ? bufferOf(state.serverSel) : [];
+    srvConsole.innerHTML = "";
+    for (const line of buf) {
+      const d = document.createElement("div");
+      d.className = "srv-line";
+      d.textContent = line;
+      srvConsole.appendChild(d);
+    }
+    srvConsole.scrollTop = srvConsole.scrollHeight;
+  }
+
+  function renderServers() {
+    serversCount.textContent = String(state.servers.length);
+    serversList.innerHTML = "";
+    if (!state.servers.length) {
+      serversList.innerHTML = '<div class="empty">Серверов пока нет.<br>Нажмите «Новый сервер».</div>';
+      return;
+    }
+    state.servers.forEach((s, i) => {
+      const item = document.createElement("div");
+      item.className = "srv-item" + (state.serverSel === s.name ? " selected" : "");
+      item.style.animationDelay = Math.min(i * 30, 240) + "ms";
+      const running = state.serverRunning === s.name;
+      const st = serverStatusOf(s, running);
+      item.innerHTML =
+        '<div class="bi-badge srv">' + esc((s.name[0] || "?").toUpperCase()) + '</div>' +
+        '<div class="bi-main">' +
+          '<div class="bi-name"><span class="txt">' + esc(s.name) + '</span>' +
+            '<span class="bi-ver">' + esc(s.version || "?") + '</span>' +
+            '<span class="bi-loader">' + esc(SRV_CORE_LABELS[s.core] || s.core) + '</span></div>' +
+          '<div class="bi-meta"><span class="bi-status ' + st.cls + '">' + esc(st.text) + '</span></div>' +
+          (s.status === "downloading"
+            ? '<div class="mini-progress"><div style="width:' + (s.percent || 0) + '%"></div></div>'
+            : "") +
+        '</div>' +
+        '<div class="bi-actions">' +
+          (s.status === "ready"
+            ? (running
+                ? '<button class="bi-btn bi-stop" title="Остановить">■</button>'
+                : '<button class="bi-btn bi-play" title="Запустить">▶</button>')
+            : "") +
+          '<button class="bi-del" title="Удалить">×</button>' +
+        '</div>';
+
+      item.addEventListener("click", (ev) => {
+        if (ev.target.closest(".bi-actions")) return;
+        selectServer(s.name);
+      });
+      item.querySelector(".bi-del").addEventListener("click", (ev) => { ev.stopPropagation(); deleteServer(s.name); });
+      const play = item.querySelector(".bi-play");
+      if (play) play.addEventListener("click", (ev) => { ev.stopPropagation(); startServer(s.name); });
+      const stop = item.querySelector(".bi-stop");
+      if (stop) stop.addEventListener("click", (ev) => { ev.stopPropagation(); doStopServer(); });
+      serversList.appendChild(item);
+    });
+  }
+
+  function renderServerPanel() {
+    const s = state.servers.find((x) => x.name === state.serverSel);
+    if (!s) {
+      serversPanelEmpty.hidden = false;
+      serversPanelInner.hidden = true;
+      return;
+    }
+    serversPanelEmpty.hidden = true;
+    serversPanelInner.hidden = false;
+
+    const running = state.serverRunning === s.name;
+    const st = serverStatusOf(s, running);
+    srvPanelName.textContent = s.name;
+    srvPanelCore.textContent = (SRV_CORE_LABELS[s.core] || s.core) + " " + (s.version || "") +
+      (s.loaderVersion ? " · " + s.loaderVersion : "");
+    srvPanelState.textContent = st.text;
+    srvDot.className = "console-dot " + (running ? "running" : (s.status === "ready" ? "idle" : "error"));
+    srvBtnStart.hidden = running || s.status !== "ready";
+    srvBtnStop.hidden = !running;
+    srvCmdInput.disabled = !running;
+    renderServerConsole();
+  }
+
+  function selectServer(name) {
+    state.serverSel = name;
+    bufferOf(name);
+    renderServers();
+    renderServerPanel();
+    srvCmdInput.focus();
+  }
+
+  async function refreshServers() {
+    const res = await window.api.listServers();
+    if (!res.ok) { toast(res.error || "Не удалось получить список серверов", "error"); return; }
+    state.servers = res.servers || [];
+    state.serverRunning = res.running || null;
+
+    if (state.serverSel && !state.servers.some((s) => s.name === state.serverSel)) {
+      state.serverSel = null;
+    }
+    if (!state.serverSel && state.servers.length) {
+      const first = state.servers.find((s) => s.status === "ready") || state.servers[0];
+      state.serverSel = first.name;
+      bufferOf(first.name);
+    }
+    renderServers();
+    renderServerPanel();
+  }
+
+  async function startServer(name) {
+    const res = await window.api.serverStart(name);
+    if (!res.ok) { toast(res.error, "error"); return; }
+    state.serverRunning = name;
+    if (state.serverSel !== name) selectServer(name);
+    renderServers();
+    renderServerPanel();
+  }
+
+  async function doStopServer() {
+    const res = await window.api.serverStop();
+    if (!res.ok) { toast(res.error, "error"); return; }
+    toast("Останавливаем сервер…");
+  }
+
+  async function deleteServer(name) {
+    if (!confirmDelete('Удалить сервер «' + name + '»?\nПапка serv/' + name + ' будет удалена полностью.')) return;
+    const res = await window.api.serverDelete(name);
+    if (!res.ok) { toast(res.error, "error"); return; }
+    if (state.serverSel === name) { state.serverSel = null; delete state.serverBuffers[name]; }
+    animateList = true;
+    await refreshServers();
+  }
+
+  async function sendServerCmd() {
+    const name = state.serverSel;
+    if (!name) return;
+    const c = srvCmdInput.value.trim();
+    if (!c) return;
+    const res = await window.api.serverCommand({ name, command: c });
+    if (!res.ok) { toast(res.error, "error"); return; }
+    srvCmdInput.value = "";
+    appendServerLine(name, "> " + c);
+  }
+
+  // ---------- модалка создания ----------
+  function showServerError(msg) {
+    srvErrorEl.textContent = msg;
+    srvErrorEl.hidden = false;
+  }
+
+  async function ensureServerCores() {
+    if (state.serverCores.length) return;
+    const res = await window.api.serverCores();
+    if (res && res.ok) state.serverCores = res.cores || [];
+  }
+
+  async function refreshServerVersions() {
+    const core = srvCoreSel.value || "vanilla";
+    srvVerSel.disabled = true;
+    srvVerSel.innerHTML = '<option value="">Загрузка версий…</option>';
+    const res = await window.api.serverVersions(core);
+    srvVerSel.disabled = false;
+    if (!res.ok) { srvVerSel.innerHTML = '<option value="">' + esc(res.error) + '</option>'; return; }
+    const vers = res.versions || [];
+    srvVerSel.innerHTML = "";
+    if (!vers.length) { srvVerSel.innerHTML = '<option value="">Нет версий</option>'; return; }
+    for (const v of vers.slice(0, 300)) {
+      const o = document.createElement("option");
+      o.value = v; o.textContent = v;
+      srvVerSel.appendChild(o);
+    }
+    await refreshServerLoaders();
+  }
+
+  async function refreshServerLoaders() {
+    const core = srvCoreSel.value;
+    if (core !== "fabric" && core !== "forge") { srvLoaderField.hidden = true; return; }
+    srvLoaderField.hidden = false;
+    const version = srvVerSel.value;
+    srvLoaderSel.disabled = true;
+    srvLoaderSel.innerHTML = '<option value="">Загрузка…</option>';
+    if (!version) { srvLoaderSel.disabled = false; return; }
+    const res = await window.api.serverLoaderVersions({ core, version });
+    srvLoaderSel.disabled = false;
+    const vers = (res && res.versions) || [];
+    srvLoaderSel.innerHTML = "";
+    if (!vers.length) { srvLoaderSel.innerHTML = '<option value="">Нет версий</option>'; return; }
+    for (const v of vers.slice(0, 300)) {
+      const o = document.createElement("option");
+      o.value = v; o.textContent = v;
+      srvLoaderSel.appendChild(o);
+    }
+  }
+
+  async function openServerModal() {
+    await ensureServerCores();
+    if (!srvCoreSel.options.length) {
+      for (const c of state.serverCores) {
+        const o = document.createElement("option");
+        o.value = c.id;
+        o.textContent = c.label + (c.note ? " — " + c.note : "");
+        srvCoreSel.appendChild(o);
+      }
+    }
+    srvErrorEl.hidden = true;
+    serverModal.hidden = false;
+    animateIn(serverModal, "overlay-anim");
+    animateIn(serverModal.querySelector(".modal"), "modal-anim");
+
+    // если установка уже идёт — показываем её прогресс, новый сервер не начинаем
+    if (state.creatingServer) {
+      srvProgWrap.hidden = false;
+      srvTextEl.textContent = "Установка…";
+      srvNameIn.disabled = true;
+      srvCoreSel.disabled = true;
+      srvVerSel.disabled = true;
+      srvLoaderSel.disabled = true;
+      srvBtnCancel.hidden = true;
+      srvBtnCreate.disabled = false;
+      srvBtnCreate.textContent = "Свернуть";
+      return;
+    }
+
+    srvProgWrap.hidden = true;
+    srvBarEl.style.width = "0%";
+    srvNameIn.value = "";
+    srvNameIn.disabled = false;
+    srvCoreSel.disabled = false;
+    srvVerSel.disabled = false;
+    srvLoaderSel.disabled = false;
+    srvMemMin.value = "";
+    srvMemMax.value = "";
+    srvPortIn.value = "25565";
+    srvEula.checked = true;
+    srvBtnCreate.disabled = false;
+    srvBtnCreate.textContent = "Создать";
+    srvBtnCancel.hidden = false;
+
+    setTimeout(() => srvNameIn.focus(), 50);
+    await refreshServerVersions();
+  }
+
+  function closeServerModal() { serverModal.hidden = true; }
+
+  // ---------- модалка свойств ----------
+  function renderPropsRows(rows) {
+    propsList.innerHTML = "";
+    if (!rows.length) {
+      propsList.innerHTML = '<div class="empty">Файл server.properties ещё не создан.</div>';
+      return;
+    }
+    for (const r of rows) {
+      const row = document.createElement("div");
+      row.className = "props-row";
+      const key = document.createElement("span");
+      key.className = "props-key";
+      key.textContent = r.key;
+      const inp = document.createElement("input");
+      inp.className = "sp-input mono";
+      inp.value = r.value;
+      inp.dataset.key = r.key;
+      inp.spellcheck = false;
+      row.appendChild(key);
+      row.appendChild(inp);
+      propsList.appendChild(row);
+    }
+  }
+
+  async function openPropsModal() {
+    const name = state.serverSel;
+    if (!name) return;
+    const s = state.servers.find((x) => x.name === name);
+    state.propsServer = name;
+    propsServerName.textContent = name;
+    propsMemMin.value = (s && s.memoryMin) || "";
+    propsMemMax.value = (s && s.memoryMax) || "";
+    propsErrorEl.hidden = true;
+    propsModal.hidden = false;
+    animateIn(propsModal, "overlay-anim");
+    animateIn(propsModal.querySelector(".modal"), "modal-anim");
+    propsList.innerHTML = '<div class="empty">Загрузка…</div>';
+    const res = await window.api.serverProperties(name);
+    if (!res.ok) { propsList.innerHTML = '<div class="empty">' + esc(res.error) + '</div>'; return; }
+    renderPropsRows(res.rows || []);
+  }
+
+  function closePropsModal() { propsModal.hidden = true; }
+
+  async function saveProps() {
+    const name = state.propsServer;
+    if (!name) return;
+    propsErrorEl.hidden = true;
+    const r1 = await window.api.serverSaveMeta({
+      name, memoryMin: propsMemMin.value.trim(), memoryMax: propsMemMax.value.trim()
+    });
+    if (!r1.ok) { propsErrorEl.textContent = r1.error; propsErrorEl.hidden = false; return; }
+    const rows = [...propsList.querySelectorAll("input[data-key]")]
+      .map((inp) => ({ key: inp.dataset.key, value: inp.value }));
+    if (rows.length) {
+      const r2 = await window.api.serverSaveProperties({ name, rows });
+      if (!r2.ok) { propsErrorEl.textContent = r2.error; propsErrorEl.hidden = false; return; }
+    }
+    closePropsModal();
+    toast("Настройки сервера сохранены", "ok");
+    await refreshServers();
+  }
+
+  // ---------- обработчики ----------
+  btnAddServer.addEventListener("click", openServerModal);
+  srvBtnCancel.addEventListener("click", closeServerModal);
+  srvCoreSel.addEventListener("change", refreshServerVersions);
+  srvVerSel.addEventListener("change", refreshServerLoaders);
+  srvCmdSend.addEventListener("click", sendServerCmd);
+  srvCmdInput.addEventListener("keydown", (e) => { if (e.key === "Enter") sendServerCmd(); });
+  srvBtnStart.addEventListener("click", () => { if (state.serverSel) startServer(state.serverSel); });
+  srvBtnStop.addEventListener("click", doStopServer);
+  srvBtnProps.addEventListener("click", openPropsModal);
+  srvBtnDelete.addEventListener("click", () => { if (state.serverSel) deleteServer(state.serverSel); });
+  srvBtnFolder.addEventListener("click", () => {
+    if (!state.serverSel) return;
+    window.api.serverFolder(state.serverSel);
+  });
+  propsCancel.addEventListener("click", closePropsModal);
+  propsSave.addEventListener("click", saveProps);
+
+  srvBtnCreate.addEventListener("click", async () => {
+    // повторный клик во время установки — просто свернуть
+    if (state.creatingServer) { closeServerModal(); return; }
+
+    const name = srvNameIn.value.trim();
+    const core = srvCoreSel.value;
+    const version = srvVerSel.value;
+    const loaderVersion = (core === "fabric" || core === "forge") ? srvLoaderSel.value : "";
+    srvErrorEl.hidden = true;
+
+    if (!name) { showServerError("Введите название сервера"); return; }
+    if (!version) { showServerError("Выберите версию Minecraft"); return; }
+    if ((core === "fabric" || core === "forge") && !loaderVersion) { showServerError("Выберите версию ядра"); return; }
+    if (!srvEula.checked) { showServerError("Отметьте согласие с Minecraft EULA"); return; }
+
+    srvNameIn.disabled = true;
+    srvCoreSel.disabled = true;
+    srvVerSel.disabled = true;
+    srvLoaderSel.disabled = true;
+    srvBtnCancel.hidden = true;
+    srvBtnCreate.disabled = true;
+    srvBtnCreate.textContent = "Свернуть";
+    srvProgWrap.hidden = false;
+    srvBarEl.style.width = "0%";
+    srvTextEl.textContent = "Подготовка…";
+    state.creatingServer = name;
+
+    const res = await window.api.serverCreate({
+      name, core, version, loaderVersion,
+      memoryMin: srvMemMin.value.trim(),
+      memoryMax: srvMemMax.value.trim(),
+      port: Number(srvPortIn.value) || 25565
+    });
+
+    state.creatingServer = null;
+    if (res.ok) {
+      closeServerModal();
+      animateList = true;
+      await refreshServers();
+      selectServer(res.name);
+      toast("Сервер «" + res.name + "» создан", "ok");
+    } else {
+      srvNameIn.disabled = false;
+      srvCoreSel.disabled = false;
+      srvVerSel.disabled = false;
+      srvLoaderSel.disabled = false;
+      srvBtnCancel.hidden = false;
+      srvBtnCreate.disabled = false;
+      srvBtnCreate.textContent = "Создать";
+      showServerError(res.error || "Не удалось создать сервер");
+      await refreshServers();
+    }
+  });
+
+  // ---------- события от главного процесса ----------
+  window.api.onServersProgress((p) => {
+    if (!p) return;
+    const s = state.servers.find((x) => x.name === p.name);
+    if (s) { s.status = p.status; s.percent = p.percent; s.text = p.text; }
+    renderServers();
+    if (state.serverSel === p.name) renderServerPanel();
+    if (state.creatingServer === p.name) {
+      srvBarEl.style.width = Math.max(0, Math.min(100, p.percent || 0)) + "%";
+      srvTextEl.textContent = p.text || "";
+    }
+    if (p.status === "ready" && s) toast("Сервер «" + p.name + "» готов", "ok");
+    if (p.status === "error" && s) toast("Сервер «" + p.name + "»: " + (p.text || "ошибка"), "error");
+  });
+
+  window.api.onServerLog((p) => {
+    if (p && p.name) appendServerLine(p.name, p.line);
+  });
+
+  window.api.onServerState((p) => {
+    if (!p) return;
+    if (p.name) {
+      state.serverRunning = (p.state === "running" || p.state === "preparing") ? p.name : null;
+    }
+    if (p.message) appendServerLine(p.name, "[ошибка] " + p.message);
+    renderServers();
+    if (state.serverSel === p.name) renderServerPanel();
+  });
+
+  // ============================================================
+  // СТАРТ
+  // ============================================================
+  refreshBuilds();
+  refreshAccounts();
+  ensureServerCores();
+  window.api.getSettings().then((res) => {
+    if (res.ok) {
+      state.settings = res.settings;
+      state.javaMajors = (res.javaMajors && res.javaMajors.length) ? res.javaMajors : state.javaMajors;
+      applyUiSettings();
+    }
+  });
+})();
+</script>
+</body>
+</html>

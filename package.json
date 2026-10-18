@@ -1,0 +1,59 @@
+{
+  "name": "cmcl",
+  "version": "1.0.0",
+  "description": "CMCL — Minecraft launcher",
+  "type": "commonjs",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:win": "electron-builder --win --x64"
+  },
+  "dependencies": {
+    "adm-zip": "^0.6.1",
+    "tar": "^7.5.22"
+  },
+  "devDependencies": {
+    "electron": "^44.9.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.cmcl.launcher",
+    "productName": "CMCL",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "style.css",
+      "skinview3d.bundle.js",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "CMCL"
+    }
+  }
+}
