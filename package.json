@@ -6,7 +6,10 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build:win": "electron-builder --win --x64"
+    "build:win": "electron-builder --win --x64",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux --x64",
+    "build:all": "electron-builder --win --x64 --mac --linux --x64"
   },
   "dependencies": {
     "adm-zip": "^0.6.1",
@@ -46,6 +49,40 @@
           ]
         }
       ]
+    },
+    "mac": {
+      "category": "public.app-category.games",
+      "identity": null,
+      "darkModeSupport": true,
+      "target": [
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "tar.gz",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "category": "Game",
+      "maintainer": "imvaner",
+      "synopsis": "CMCL — Minecraft launcher",
+      "executableName": "cmcl"
     },
     "nsis": {
       "oneClick": false,
